@@ -33,6 +33,15 @@ module.exports = (client) => {
         const cmdName = args.shift().toLowerCase()
         const cmd = client.commands.get(cmdName) || client.commands.get(client.aliases.get(cmd))
         if(cmd) {
+            //Check if user needs any special permissions to run the command
+            const reqPerm = cmd.requiredPermissions
+            if(reqPerm && Array.isArray(reqPerm)) {
+                console.log(`Checking user permissions for running command ${cmd.name}`)
+                for(const perm of reqPerm) {
+                    if (!message.member.hasPermission(perm))
+                        return //Member doesn't have required permission, so abort command execution
+                }
+            }
             console.log(`Running command ${cmd.name}`)
             cmd.run(message, args)
         }
