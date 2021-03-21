@@ -4,6 +4,7 @@ const {Collection} = require('discord.js')
 
 module.exports = (client) => {
     client.commands = new Collection()
+    client.aliases = new Collection()
 
     const load = (dir) => {
         const files = readdirSync(join(__dirname, dir))
@@ -20,7 +21,7 @@ module.exports = (client) => {
                     console.log(`Loaded command ${cmd.name}`)
                     if (cmd.aliases && Array.isArray(cmd.aliases)) {
                         for (const alias of cmd.aliases) {
-                            client.commands.set(alias, cmd)
+                            client.aliases.set(alias, cmd.name)
                         }
                         console.log(`Registered aliases for ${cmd.name}`)
                     }
