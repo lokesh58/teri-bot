@@ -13,7 +13,18 @@ module.exports = (client) => {
                 load(join(dir, file))
             } else if(file.endsWith('.js')) {
                 const cmd = require(join(__dirname, dir, file))
-                console.log(cmd)
+                if (!cmd.name) {
+                    console.log(`${file} does not have a name specified`)
+                } else {
+                    client.commands.set(cmd.name, cmd)
+                    console.log(`Loaded command ${cmd.name}`)
+                    if (cmd.aliases && Array.isArray(cmd.aliases)) {
+                        for (const alias of cmd.aliases) {
+                            client.commands.set(alias, cmd)
+                        }
+                        console.log(`Registered aliases for ${cmd.name}`)
+                    }
+                }
             }
         }
     }
