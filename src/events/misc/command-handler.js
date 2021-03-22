@@ -31,7 +31,7 @@ module.exports = (client) => {
         if(!message.content.startsWith(prefix)) return
         const args = message.content.slice(prefix.length).trim().split(/\s+/)
         const cmdName = args.shift().toLowerCase()
-        const cmd = client.commands.get(cmdName) || client.commands.get(client.aliases.get(cmd))
+        const cmd = client.commands.get(cmdName) || client.commands.get(client.aliases.get(cmdName))
         if(cmd) {
             //Check if user needs any special permissions to run the command
             const reqPerm = cmd.requiredPermissions
