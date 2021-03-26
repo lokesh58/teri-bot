@@ -38,6 +38,7 @@ const changePrefix = async (message, newPrefix) => {
     if(!result) {
         message.reply('There was an error changing the prefix. Please try again.').catch(console.error)
     } else {
+        prefixes.set(guild.id, newPrefix)
         const embed = new MessageEmbed()
                             .setTitle(`Prefix change for \`${guild.name}\``)
                             .setDescription(
