@@ -4,7 +4,8 @@ module.exports = (client) => {
     client.on('ready', () => {
         mongoose.connect(process.env.MONGODB_URI, {
             useUnifiedTopology: true,
-            useNewUrlParser: true
+            useNewUrlParser: true,
+            useFindAndModify: false
         }).then(
             console.log('Connected to mongodb!')
         ).catch(console.error)
