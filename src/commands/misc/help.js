@@ -1,36 +1,25 @@
 const {Message, MessageEmbed} = require('discord.js')
-const {prefixes} = require('../../collections')
-
+const checkPermission = require('../../utils/checkPermission')
+const getPrefix = require('../../utils/getPrefix')
 /**
  * 
  * @param {Message} message 
  */
-const listCommands = (message) => {
+const listCommands = async (message) => {
     const {client, member, guild, author, channel} = message
     // Make a dictionary with key as category, and value as list of all commands with that category
     const commands = {}
     const noCategory = 'Everything Else'
     for (const cmd of client.commands.values()) {
-        const reqPerm = cmd.requiredPermissions
-        if (reqPerm && Array.isArray(reqPerm)) {
-            canUse = true
-            for (const perm of reqPerm) {
-                if (!member.hasPermission(perm)) {
-                    canUse = false
-                    break
-                }
-            }
-            if (!canUse) {
-                continue
-            }
-        }
+        if (!checkPermission(member, cmd))
+            continue
         const category = cmd.category ? cmd.category : noCategory
         if(!commands[category]){
             commands[category] = []
         }
         commands[category].push(`\`${cmd.name}\``)
     }
-    const prefix = prefixes.get(guild.id)
+    const prefix = await getPrefix(guild.id)
     if (!prefix) {
         prefix = process.env.DEFAULT_PREFIX
         console.error('Executing help command without prefix in collection')
@@ -58,10 +47,10 @@ const listCommands = (message) => {
  * @param {Message} message 
  * @param {String} cmdName 
  */
-const commandHelp = (message, cmdName) => {
+const commandHelp = async (message, cmdName) => {
     const {client, channel, guild, author} = message
     const cmd = client.commands.get(cmdName) || client.commands.get(client.aliases.get(cmdName))
-    const prefix = prefixes.get(guild.id)
+    const prefix = await getPrefix(guild.id)
     if (!prefix) {
         prefix = process.env.DEFAULT_PREFIX
         console.error('Executing help command without prefix in collection')
