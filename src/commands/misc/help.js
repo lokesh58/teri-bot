@@ -36,7 +36,7 @@ const listCommands = async (message) => {
                     ).setColor('RANDOM')
     //Add all commands in fields
     for (const category in commands) {
-        embed.addField(category, commands[category].join(' '))
+        embed.addField(category, commands[category].join(', '))
     }
     //Send the embed in channel
     channel.send(embed).catch(console.error)
@@ -76,6 +76,9 @@ const commandHelp = async (message, cmdName) => {
                             ).setTimestamp()
         if (cmd.aliases && Array.isArray(cmd.aliases)) {
             embed.addField('Aliases', `\`${cmd.aliases.join('\`, \`')}\``)
+        }
+        if (cmd.requiredPermissions && Array.isArray(cmd.requiredPermissions)) {
+            embed.addField('Required Permissions', `\`${cmd.requiredPermissions.join('\`, \`')}\``)
         }
         if (cmd.desc) {
             embed.addField('Description', cmd.desc)
