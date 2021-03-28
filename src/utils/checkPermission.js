@@ -11,7 +11,6 @@ module.exports = (member, cmd) => {
     //Check if user has the required permissions to use this command
     const reqPerm = cmd.requiredPermissions
     if(reqPerm && Array.isArray(reqPerm)) {
-        console.log(`Checking user permissions for running command ${cmd.name}`)
         for(const perm of reqPerm) {
             if (!member.hasPermission(perm))
                 return false
