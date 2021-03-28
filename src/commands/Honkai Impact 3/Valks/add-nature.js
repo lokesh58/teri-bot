@@ -1,13 +1,61 @@
-const {Message, Emoji} = require('discord.js')
+const {Message, MessageEmbed} = require('discord.js')
+const natureSchema = require('../../../models/Honkai Impact 3/nature-schema')
+const {valkNature} = require('../../../collections')
 
 /**
  * 
- * @param {Message} message
+ * @param {Message} message 
  * @param {String} name 
- * @param {Emoji} emoji 
+ * @param {String} emoji 
  */
 const addNature = async (message, name, emoji) => {
-    //TODO
+    //Check if name or emoji alreaady exists
+    let result = valkNature.find(nature => nature.name === name || nature.emoji === emoji)
+    if(!result) {
+        result = await natureSchema.find({
+            $or: [
+                {name: name},
+                {emoji: emoji}
+            ]
+        }).catch(console.error)
+        if(result && result.length > 0) {
+            for(const nature of result) {
+                valkNature.set(nature._id,{
+                    name: nature.name,
+                    emoji: nature.emoji
+                })
+            }
+            //Either name or emoji already exists
+            message.reply('The name or emoji already used in another nature. Please check them.').catch(console.error)
+            return
+        }
+    }
+    result = await new natureSchema({
+        name: name,
+        emoji: emoji
+    }).save().catch(console.error)
+    if(!result) {
+        //Some error in writing to daatabase
+        message.reply('Some error occured. Please try again.').catch(console.error)
+        return
+    }
+    valkNature.set(result._id, {
+        name: result.name,
+        emoji: result.emoji
+    })
+    const {author, channel} = message
+    const embed = new MessageEmbed()
+                        .setTitle('Add Nature Successful')
+                        .setDescription(
+                            `*The following nature has been added*
+                            **Name:** \`${result.name}\`
+                            **Emoji:** ${result.emoji}`
+                        ).setColor('00FF00')
+                        .setFooter(
+                            `Requested by ${author.tag}`,
+                            author.displayAvatarURL({dynamic: true})
+                        ).setTimestamp()
+    channel.send(embed).catch(console.error)
 }
 
 module.exports = {
@@ -47,6 +95,6 @@ module.exports = {
             message.reply('I don\'t have access to that emote. Please use another one.')
             return
         }
-        addNature(message, name, fixemoji)
+        addNature(message, name, emoji)
     }
 }
