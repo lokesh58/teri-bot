@@ -1,6 +1,7 @@
 const {Message, MessageEmbed} = require('discord.js')
 const checkPermission = require('../../utils/checkPermission')
 const getPrefix = require('../../utils/getPrefix')
+const capitalize = require('../../utils/string-capitalize')
 /**
  * 
  * @param {Message} message 
@@ -36,7 +37,7 @@ const listCommands = async (message) => {
                     ).setColor('RANDOM')
     //Add all commands in fields
     for (const category in commands) {
-        embed.addField(category, commands[category].join(', '))
+        embed.addField(capitalize(category), commands[category].join(', '))
     }
     //Send the embed in channel
     channel.send(embed).catch(console.error)

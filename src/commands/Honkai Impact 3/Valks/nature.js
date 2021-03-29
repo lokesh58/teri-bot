@@ -1,5 +1,6 @@
 const {Message, MessageEmbed} = require('discord.js')
 const natureSchema = require('../../../models/Honkai Impact 3/nature-schema')
+const capitalize = require('../../../utils/string-capitalize')
 
 module.exports = {
     name: 'nature',
@@ -22,7 +23,7 @@ module.exports = {
         } else {
             for (const nature of natures) {
                 if (list.length > 0) list += '\n'
-                list += `• \`${nature.name}\` ${nature.emoji}`
+                list += `• \`${capitalize(nature.name)}\` ${nature.emoji}`
             }
         }
         const {author, channel} = message
