@@ -1,7 +1,7 @@
 const {Message, MessageEmbed} = require('discord.js')
-const checkPermission = require('../../utils/checkPermission')
-const getPrefix = require('../../utils/getPrefix')
-const capitalize = require('../../utils/string-capitalize')
+const checkPermission = require('$utils/checkPermission')
+const getPrefix = require('$utils/getPrefix')
+const capitalize = require('$utils/string-capitalize')
 /**
  * 
  * @param {Message} message 

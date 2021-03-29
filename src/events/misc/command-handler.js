@@ -1,5 +1,5 @@
-const getPrefix = require('../../utils/getPrefix')
-const checkPermission = require('../../utils/checkPermission')
+const getPrefix = require('$utils/getPrefix')
+const checkPermission = require('$utils/checkPermission')
 
 module.exports = (client) => {
     client.on('message', async (message) => {
