@@ -28,7 +28,7 @@ const addNature = async (message, name, emoji) => {
             }
         }
     }
-    if (result) {
+    if (result && result.length > 0) {
         //Either name or emoji already exists
         message.reply('The name or emoji already used in another nature. Please check them.').catch(console.error)
         return
