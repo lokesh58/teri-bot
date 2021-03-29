@@ -3,7 +3,7 @@ const natureSchema = require('$models/Honkai Impact 3/nature-schema')
 const capitalize = require('$utils/string-capitalize')
 
 module.exports = {
-    name: 'nature',
+    name: 'natures',
     desc: 'Gives the list of all valkyrja natures stored in the database',
     category: 'Honkai Impact 3',
     /**
