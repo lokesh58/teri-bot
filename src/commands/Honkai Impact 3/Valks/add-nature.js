@@ -1,6 +1,7 @@
 const {Message, MessageEmbed} = require('discord.js')
 const natureSchema = require('../../../models/Honkai Impact 3/nature-schema')
 const {valkNature} = require('../../../collections')
+const capitalize = require('../../../utils/string-capitalize')
 
 /**
  * 
@@ -25,10 +26,12 @@ const addNature = async (message, name, emoji) => {
                     emoji: nature.emoji
                 })
             }
-            //Either name or emoji already exists
-            message.reply('The name or emoji already used in another nature. Please check them.').catch(console.error)
-            return
         }
+    }
+    if (result) {
+        //Either name or emoji already exists
+        message.reply('The name or emoji already used in another nature. Please check them.').catch(console.error)
+        return
     }
     result = await new natureSchema({
         name: name,
@@ -48,7 +51,7 @@ const addNature = async (message, name, emoji) => {
                         .setTitle('Add Nature Successful')
                         .setDescription(
                             `*The following nature has been added*
-                            **Name:** \`${result.name}\`
+                            **Name:** \`${capitalize(result.name)}\`
                             **Emoji:** ${result.emoji}`
                         ).setColor('00FF00')
                         .setFooter(
