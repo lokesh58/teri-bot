@@ -19,7 +19,11 @@ const addNature = async (message, name, emoji) => {
                 {emoji: emoji}
             ]
         }).catch(console.error)
-        if(result && result.length > 0) {
+        if (!result) {
+            message.reply('An error occured. Please try again!').catch(console.error)
+            return
+        }
+        if(result.length > 0) {
             for(const nature of result) {
                 valkNature.set(nature._id,{
                     name: nature.name,
@@ -27,8 +31,9 @@ const addNature = async (message, name, emoji) => {
                 })
             }
         }
+        result = result[0]
     }
-    if (result && result.length > 0) {
+    if (result) {
         //Either name or emoji already exists
         message.reply('The name or emoji already used in another nature. Please check them.').catch(console.error)
         return
@@ -86,11 +91,12 @@ module.exports = {
             return
         }
         const name = args[0].toLowerCase()
-        const emoji = (args[1].match(/<a?:.+?:\d+>/))[0]
+        let emoji = args[1].match(/<a?:.+?:\d+>/)
         if (!emoji) {
             message.reply('Please specify a valid emoji for the nature').catch(console.error)
             return
         }
+        emoji = emoji[0]
         const emojiID = emoji.match(/\d+/).pop()
         const {client} = message
         const fixemoji = client.emojis.cache.get(emojiID)
