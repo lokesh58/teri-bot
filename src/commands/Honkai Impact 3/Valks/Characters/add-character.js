@@ -62,7 +62,7 @@ module.exports = {
         const duplicate = []
         const error = []
         for (const name of args) {
-            const res = await addChar(name)
+            const res = await addChar(name.toLowerCase())
             switch(res){
                 case 0:
                     success.push(`\`${name}\``)
