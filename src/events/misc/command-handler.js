@@ -8,7 +8,8 @@ module.exports = (client) => {
         const prefix = await getPrefix(message.guild.id)
         if(!prefix) return //Some error retriving prefix, abort command execution
         if(!message.content.toLowerCase().startsWith(prefix)) return
-        const args = parse(message.content.slice(prefix.length).trim())
+        //replace < with \< and > with \> because they are special characters for parse, hence need escape characters
+        const args = parse(message.content.slice(prefix.length).trim().replace('<','\\<').replace('>', '\\>'))
         const cmdName = args.shift().toLowerCase()
         const cmd = client.commands.get(cmdName) || client.commands.get(client.aliases.get(cmdName))
         if(cmd) {
