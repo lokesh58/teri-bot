@@ -1,5 +1,6 @@
 const getPrefix = require('$utils/getPrefix')
 const checkPermission = require('$utils/checkPermission')
+const {parse} = require('shell-quote')
 
 module.exports = (client) => {
     client.on('message', async (message) => {
@@ -7,7 +8,7 @@ module.exports = (client) => {
         const prefix = await getPrefix(message.guild.id)
         if(!prefix) return //Some error retriving prefix, abort command execution
         if(!message.content.toLowerCase().startsWith(prefix)) return
-        const args = message.content.slice(prefix.length).trim().split(/\s+/)
+        const args = parse(message.content.slice(prefix.length).trim())
         const cmdName = args.shift().toLowerCase()
         const cmd = client.commands.get(cmdName) || client.commands.get(client.aliases.get(cmdName))
         if(cmd) {

@@ -1,5 +1,4 @@
 const {Message} = require('discord.js')
-const {parse} = require('shell-quote')
 
 module.exports = {
     name: 'add-valk',
@@ -21,8 +20,6 @@ module.exports = {
      * @param {[String]} args 
      */
     run: (message, args) => {
-        const parsedArgs = parse(args.join(' '))
-        console.log(parsedArgs)
         message.reply('Under development').catch(console.error)
     }
 }
