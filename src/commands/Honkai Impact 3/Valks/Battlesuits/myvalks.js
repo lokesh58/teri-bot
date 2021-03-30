@@ -1,5 +1,5 @@
 const {Message, MessageEmbed} = require('discord.js')
-const {valkBattlesuits, userValks, valkChars, valkNature} = require('$collections')
+const {valkBattlesuits, valkNature} = require('$collections')
 const valkSchema = require('$models/Honkai Impact 3/valk-schema')
 const userValkSchema = require('$models/Honkai Impact 3/user-valk-schema')
 const charSchema = require('$models/Honkai Impact 3/character-schema')
@@ -19,12 +19,14 @@ const rankValues = {
 }
 
 const getValk = async (valk) => {
-    let res = valkBattlesuits.find(v => v.name === valk || v.acronyms.includes(valk))
+    const name = valk.toLowerCase()
+    const acronym = valk.toUpperCase()
+    let res = valkBattlesuits.find(v => v.name === name || v.acronyms.includes(acronym))
     if(!res){
         res = await valkSchema.find({
             $or: [
-                {name: valk},
-                {acronyms: valk}
+                {name: name},
+                {acronyms: acronym}
             ]
         }).catch(console.error)
         if(res){
@@ -45,17 +47,6 @@ const getValkById = async (id) => {
         res = await valkSchema.findById(id).catch(console.error)
         if(res){
             valkBattlesuits.set(res._id, res)
-        }
-    }
-    return res
-}
-
-const getCharById = async (id) => {
-    let res = valkChars.get(id)
-    if(!res) {
-        res = await charSchema.findById(id).catch(console.error)
-        if(res){
-            valkChars.set(res._id, res)
         }
     }
     return res
@@ -132,7 +123,7 @@ const addValks = async (message, valks) => {
     const {author, channel} = message
     const status = []
     for(const rawValk of valks) {
-        if(!rawValk.rank){
+        if(!rawValk.rank || !rawValk.valk){
             status.push(`❌Valkyrja name and rank must be separated by space!`)
             continue
         }
@@ -198,10 +189,9 @@ module.exports = {
             const rawValks = args.join(' ').split(/\s*,\s*/)
             const valks = []
             for(const rawValk of rawValks) {
-                console.log(rawValk)
                 const parts = rawValk.split(/\s+/)
                 const rank = parts.pop().toUpperCase()
-                const valk = parts.join(' ').toLowerCase()
+                const valk = parts.join(' ')
                 valks.push({
                     valk: valk,
                     rank: rank
