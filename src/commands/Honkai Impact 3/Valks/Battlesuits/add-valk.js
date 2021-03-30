@@ -163,7 +163,7 @@ module.exports = {
         }
         let [name, battlesuit, nature, rank, acronyms, emoji] = args
         rank = rank.toUpperCase()
-        
+        if(!validBaseRanks.includes(rank)) return message.reply('The Base Rank is not valid!').catch(console.error)
         acronyms = acronyms.toUpperCase().split(/\s+/)
         if (emoji) {
             emoji = emoji.match(/<a?:.+?:\d+>/)
