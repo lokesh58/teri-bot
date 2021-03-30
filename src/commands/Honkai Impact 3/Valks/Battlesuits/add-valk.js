@@ -108,8 +108,8 @@ const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji)
                             `Requested by ${author.tag}`,
                             author.displayAvatarURL({dynamic: true})
                         ).setTimestamp()
-    if (emoji) {
-        embed.addField('Emoji', res.emoji)
+    if (res.emoji) {
+        embed.setThumbnail(res.emoji)
     }
     channel.send(embed).catch(console.error)
 }
