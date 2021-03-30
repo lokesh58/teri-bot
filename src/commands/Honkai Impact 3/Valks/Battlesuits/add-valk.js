@@ -1,4 +1,4 @@
-const {Message, MessageEmbed} = require('discord.js')
+const {Message, MessageEmbed, Util} = require('discord.js')
 const {valkBattlesuits, valkChars, valkNature} = require('$collections')
 const valkSchema = require('$models/Honkai Impact 3/valk-schema')
 const natureSchema = require('$models/Honkai Impact 3/nature-schema')
@@ -109,7 +109,10 @@ const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji)
                             author.displayAvatarURL({dynamic: true})
                         ).setTimestamp()
     if (res.emoji) {
-        embed.setThumbnail(res.emoji)
+        const emote = Util.parseEmoji(res.emoji)
+        const ext = emote.animated ? 'gif' : 'png'
+        const url = `https://cdn.discordapp.com/emojis/${emote.id}.${ext}?v=1`
+        embed.setThumbnail(url)
     }
     channel.send(embed).catch(console.error)
 }
