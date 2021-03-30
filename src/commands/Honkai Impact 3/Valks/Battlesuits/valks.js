@@ -10,10 +10,7 @@ const getNature = async (id) => {
     if(!res){
         res = await natureSchema.findById(id).catch(console.error)
         if (res) {
-            valkNature.set(res._id, {
-                name: res.name,
-                emoji: res.emoji
-            })
+            valkNature.set(res._id, res)
         }
     }
     return res

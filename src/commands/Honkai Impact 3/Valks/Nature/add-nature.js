@@ -25,10 +25,7 @@ const addNature = async (message, name, emoji) => {
         }
         if(result.length > 0) {
             for(const nature of result) {
-                valkNature.set(nature._id,{
-                    name: nature.name,
-                    emoji: nature.emoji
-                })
+                valkNature.set(nature._id, nature)
             }
         }
         result = result[0]
@@ -47,10 +44,7 @@ const addNature = async (message, name, emoji) => {
         message.reply('Some error occured. Please try again.').catch(console.error)
         return
     }
-    valkNature.set(result._id, {
-        name: result.name,
-        emoji: result.emoji
-    })
+    valkNature.set(result._id, result)
     const {author, channel} = message
     const embed = new MessageEmbed()
                         .setTitle('Add Nature Successful')

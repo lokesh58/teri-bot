@@ -9,7 +9,7 @@ const charSchema = require('$models/Honkai Impact 3/character-schema')
  */
 const addChar = async (name) => {
     //Check if name alreaady in database
-    let result = valkChars.find(charName => charName === name)
+    let result = valkChars.find(charName => charName.name === name)
     if (!result) {
         result = await charSchema.find({
             name: name
@@ -19,7 +19,7 @@ const addChar = async (name) => {
         }
         if (result.length > 0) {
             for (const char of result) {
-                valkChars.set(char._id, char.name)
+                valkChars.set(char._id, char)
             }
             return 2
         }
@@ -33,7 +33,7 @@ const addChar = async (name) => {
     if (!result) {
         return 1
     }
-    valkChars.set(result._id, result.name)
+    valkChars.set(result._id, result)
     return 0
 }
 

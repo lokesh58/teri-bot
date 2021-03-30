@@ -18,13 +18,13 @@ const capitalize = require('$utils/string-capitalize')
 const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji) => {
     const valkObj = new Object()
     //Check if name is valid character name -------------------------------------------------------
-    let res = valkChars.findKey(charName => charName === name)
+    let res = valkChars.findKey(charName => charName.name === name)
     if (!res) { //Search the database
         res = await charSchema.findOne({
             name: name
         }).catch(console.error)
         if (!res) return message.reply('The character does not exist in database!').catch(console.error)
-        valkChars.set(res._id, res.name)
+        valkChars.set(res._id, res)
         res = res._id
     }
     valkObj.character = res
@@ -39,10 +39,7 @@ const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji)
             ]
         }).catch(console.error)
         if (!res) return message.reply('The nature does not exist in database!').catch(console.error)
-        valkNature.set(res._id,{
-            name: res.name,
-            emoji: res.emoji
-        })
+        valkNature.set(res._id, res)
         res = res._id
     }
     valkObj.nature = res
@@ -64,13 +61,7 @@ const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji)
         if (!res) return message.reply('Some error occured. Please try again!').catch(console.error)
         if (res.length > 0) {
             for (const valk of res) {
-                valkBattlesuits.set(valk._id, {
-                    character: valk.character,
-                    name: valk.name,
-                    nature: valk.nature,
-                    acronyms: valk.acronyms,
-                    emoji: valk.emoji
-                })
+                valkBattlesuits.set(valk._id, valk)
             }
         }
         res = res[0]
@@ -84,13 +75,7 @@ const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji)
     //Add to database
     res = await new valkSchema(valkObj).save().catch(console.error)
     if (!res) return message.reply('Some error occured. Please try again!').catch(console.error)
-    valkBattlesuits.set(res._id, {
-        character: res.character,
-        name: res.name,
-        nature: res.nature,
-        acronyms: res.acronyms,
-        emoji: res.emoji
-    })
+    valkBattlesuits.set(res._id, res)
 
     const {author, channel} = message
     const embed = new MessageEmbed()
