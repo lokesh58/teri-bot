@@ -3,7 +3,8 @@ const {Collection} = require('discord.js')
 prefixes = new Collection()
 valkNature = new Collection()
 valkChars = new Collection()
+valkBattlesuits = new Collection()
 
 module.exports = {
-    prefixes, valkNature, valkChars
+    prefixes, valkNature, valkChars, valkBattlesuits
 }
