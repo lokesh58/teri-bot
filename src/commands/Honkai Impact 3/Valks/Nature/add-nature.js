@@ -101,7 +101,7 @@ module.exports = {
         const {client} = message
         const fixemoji = client.emojis.cache.get(emojiID)
         if (!fixemoji) {
-            message.reply('I don\'t have access to that emote. Please use another one.')
+            message.reply('I don\'t have access to that emoji. Please use another one.')
             return
         }
         addNature(message, name, emoji)
