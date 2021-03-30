@@ -8,7 +8,7 @@ const capitalize = require('$utils/string-capitalize')
 const getNature = async (id) => {
     let res = valkNature.get(id)
     if(!res){
-        res = await natureSchema.findByID(id).catch(console.error)
+        res = await natureSchema.findById(id).catch(console.error)
         if (res) {
             valkNature.set(res._id, {
                 name: res.name,
@@ -43,8 +43,10 @@ module.exports = {
             }else{
                 for(const valk of valks){
                     if(valkData.length > 0) valkData += '\n'
+                    const nature = await getNature(valk.nature)
+                    if(!nature) return message.reply('Some error occured. Please try again!').catch(console.error)
                     valkData += 
-                        `${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} \`${valk.acronyms[0]}\` ${await getNature(valk.nature)}`
+                        `${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} \`${valk.acronyms[0]}\` ${nature.emoji}`
                 }
             }
             fields.push({
