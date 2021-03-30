@@ -30,13 +30,18 @@ module.exports = {
      */
     run: async (message, args) => {
         const chars = await charSchema.find({}).catch(console.error)
-        if(!chars) return message.reply('Some error occured. Please try again!').catch(console.error)
+        const allvalks = await valkSchema.find({}).catch(console.error)
+        if(!chars || !allvalks) return message.reply('Some error occured. Please try again!').catch(console.error)
+        const mapValk = {}
+        for (const valk of allvalks) {
+            if(!mapValk[valk.character]){
+                mapValk[valk.character] = []
+            }
+            mapValk[valk.character].push(valk)
+        }
         const fields = []
         for(const char of chars) {
-            const valks = await valkSchema.find({
-                character: char._id
-            }).catch(console.error)
-            if(!valks) return message.reply('Some error occured. Please try again!').catch(console.error)
+            const valks = mapValk[char._id]
             let valkData = ''
             if(valks.length === 0){
                 valkData = 'No battlesuit for this character'
