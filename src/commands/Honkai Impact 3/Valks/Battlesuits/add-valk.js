@@ -11,10 +11,11 @@ const capitalize = require('$utils/string-capitalize')
  * @param {String} name 
  * @param {String} battlesuit 
  * @param {String} nature 
+ * @param {String} rank 
  * @param {[String]} acronyms 
  * @param {String} emoji 
  */
-const addValk = async (message, name, battlesuit, nature, acronyms, emoji) => {
+const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji) => {
     const valkObj = new Object()
     //Check if name is valid character name -------------------------------------------------------
     let res = valkChars.findKey(charName => charName === name)
@@ -77,6 +78,7 @@ const addValk = async (message, name, battlesuit, nature, acronyms, emoji) => {
     if (res) return message.reply('The battlesuit name or emoji or acronym already exists in database!').catch(console.error)
     valkObj.name = battlesuit
     valkObj.acronyms = acronyms
+    valkObj.baseRank = rank
     if (emoji) valkObj.emoji = emoji
 
     //Add to database
@@ -99,7 +101,8 @@ const addValk = async (message, name, battlesuit, nature, acronyms, emoji) => {
                         .addField(
                             'Nature',
                             `${capitalize(valkNature.get(res.nature).name)} ${valkNature.get(res.nature).emoji}`
-                        ).addField('Acronyms', res.acronyms.join(', '))
+                        ).addField('Base Rank', res.baseRank)
+                        .addField('Acronyms', res.acronyms.join(', '))
                         .setColor('00FF00')
                         .setFooter(
                             `Requested by ${author.tag}`,
@@ -111,15 +114,20 @@ const addValk = async (message, name, battlesuit, nature, acronyms, emoji) => {
     channel.send(embed).catch(console.error)
 }
 
+const validBaseRanks = [
+    'B', 'A', 'S'
+]
+
 module.exports = {
     name: 'add-valk',
     aliases: ['addvalk', 'add_valk'],
     desc: 'Add a new valkyrja battlesuit to the database',
-    expectedArgs: '<valkyrja name> <battlesuit name> <battlesuit nature> <acronyms> (<emoji>)',
+    expectedArgs: '<valkyrja name> <battlesuit name> <battlesuit nature> <base rank> <acronyms> (<emoji>)',
     parameters:
         `\`<valkyrja name>\`: Name of the character
         \`<battlesuit name>\`: Name of the battlesuit
         \`<battlesuit nature>\`: Nature of the battlesuit (name or emoji)
+        \`<base rank>\`: Base rank of the battlesuit (B, A or S)
         \`<acronyms>\`: Acronyms for the battlesuit, if specifying more than one, enclose all within quotes and separate by space
         \`(emoji)\`: Optional, emoji for the battlesuit
         **Note**: To specify names with multiple words, enclose them in quotes eg: \"Kiana Kaslana\", \"White Comet\"`,
@@ -144,10 +152,15 @@ module.exports = {
             return
         }
         if(!args[3]){
+            message.reply('Please specify the base rank of the battlesuit!').catch(console.error)
+        }
+        if(!args[4]){
             message.reply('Please specify atleast one acronym!').catch(console.error)
             return
         }
-        let [name, battlesuit, nature, acronyms, emoji] = args
+        let [name, battlesuit, nature, rank, acronyms, emoji] = args
+        rank = rank.toUpperCase()
+        
         acronyms = acronyms.toUpperCase().split(/\s+/)
         if (emoji) {
             emoji = emoji.match(/<a?:.+?:\d+>/)
@@ -160,7 +173,6 @@ module.exports = {
                 }
             }
         }
-        if (!emoji) emoji = null
-        addValk(message, name.toLowerCase(), battlesuit.toLowerCase(), nature.toLowerCase(), acronyms, emoji)
+        addValk(message, name.toLowerCase(), battlesuit.toLowerCase(), nature.toLowerCase(), rank, acronyms, emoji)
     }
 }

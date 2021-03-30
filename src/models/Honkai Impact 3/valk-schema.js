@@ -5,13 +5,16 @@ const reqObject = {
     required: true
 }
 
+const reqString = {
+    type: String,
+    required: true
+}
+
 const valkSchema = new Schema({
     character: reqObject,
-    name: {
-        type: String,
-        required: true
-    },
+    name: reqString,
     nature: reqObject,
+    baseRank: reqString,
     acronyms: {
         type: [String],
         required: true
