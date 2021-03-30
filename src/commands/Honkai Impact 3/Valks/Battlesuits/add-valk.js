@@ -169,11 +169,6 @@ module.exports = {
             emoji = emoji.match(/<a?:.+?:\d+>/)
             if (emoji) {
                 emoji = emoji[0]
-                const emojiID = emoji.match(/\d+/).pop()
-                if (!message.client.emojis.cache.get(emojiID)) {
-                    message.reply('I don\'t have access to that emoji. No emoji will be set.')
-                    emoji = null
-                }
             }
         }
         addValk(message, name.toLowerCase(), battlesuit.toLowerCase(), nature.toLowerCase(), rank, acronyms, emoji)

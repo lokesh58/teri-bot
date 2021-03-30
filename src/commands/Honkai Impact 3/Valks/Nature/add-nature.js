@@ -97,13 +97,6 @@ module.exports = {
             return
         }
         emoji = emoji[0]
-        const emojiID = emoji.match(/\d+/).pop()
-        const {client} = message
-        const fixemoji = client.emojis.cache.get(emojiID)
-        if (!fixemoji) {
-            message.reply('I don\'t have access to that emoji. Please use another one.')
-            return
-        }
         addNature(message, name, emoji)
     }
 }
