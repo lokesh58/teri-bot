@@ -148,7 +148,7 @@ module.exports = {
             return
         }
         let [name, battlesuit, nature, acronyms, emoji] = args
-        acronyms = acronyms.split(/\s+/)
+        acronyms = acronyms.toUpperCase().split(/\s+/)
         if (emoji) {
             emoji = emoji.match(/<a?:.+?:\d+>/)
             if (emoji) {
