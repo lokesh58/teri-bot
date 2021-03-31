@@ -153,6 +153,7 @@ const addValks = async (message, valks) => {
         }).catch(console.error)
         if(!res){
             status.push(`❌An error occurred while adding ${capitalize(valk.name)} ${valk.emoji?valk.emoji:''}`)
+            continue
         }
         status.push(`✅**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:''} **${res.rank}**`)
     }
