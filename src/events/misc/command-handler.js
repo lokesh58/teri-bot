@@ -18,6 +18,11 @@ module.exports = (client) => {
                 return //Member doesn't have required permission, so abort command execution
             console.log(`Running command ${cmd.name}`)
             cmd.run(message, args)
+        }else{
+            //If not valid command, tell the user
+            message.reply(`\`${cmdName}\` is not a valid command. Use help command to view all valid commands!`).then(msg => {
+                msg.delete({timeout: 5000}).catch(console.error)
+            }).catch(console.error)
         }
     })
 }
