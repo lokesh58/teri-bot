@@ -1,67 +1,7 @@
-const {Message, MessageEmbed} = require('discord.js')
-const {valkBattlesuits, valkNature} = require('$collections')
-const valkSchema = require('$models/Honkai Impact 3/valk-schema')
+const {Message, MessageEmbed, Collection} = require('discord.js')
+const {valkBattlesuits, valkNature, valkChars, userValks} = require('$collections')
 const userValkSchema = require('$models/Honkai Impact 3/user-valk-schema')
-const charSchema = require('$models/Honkai Impact 3/character-schema')
-const natureSchema = require('$models/Honkai Impact 3/nature-schema')
 const capitalize = require('$utils/string-capitalize')
-
-const validRanks = [
-    'B', 'A', 'S', 'SS', 'SSS'
-]
-
-const rankValues = {
-    'B': 1,
-    'A': 2,
-    'S': 3,
-    'SS': 4,
-    'SSS': 5
-}
-
-const getValk = async (valk) => {
-    const name = valk.toLowerCase()
-    const acronym = valk.toUpperCase()
-    let res = valkBattlesuits.find(v => v.name === name || v.acronyms.includes(acronym))
-    if(!res){
-        res = await valkSchema.find({
-            $or: [
-                {name: name},
-                {acronyms: acronym}
-            ]
-        }).catch(console.error)
-        if(res){
-            if(res.length === 0)
-                res = null
-            else {
-                res = res[0]
-                valkBattlesuits.set(res._id, res)
-            }
-        }
-    }
-    return res
-}
-
-const getValkById = async (id) => {
-    let res = valkBattlesuits.get(id)
-    if(!res) {
-        res = await valkSchema.findById(id).catch(console.error)
-        if(res){
-            valkBattlesuits.set(res._id, res)
-        }
-    }
-    return res
-}
-
-const getNatureById = async (id) => {
-    let res = valkNature.get(id)
-    if(!res) {
-        res = await natureSchema.findById(id).catch(console.error)
-        if(res){
-            valkNature.set(res._id, res)
-        }
-    }
-    return res
-}
 
 /**
  * 
@@ -69,30 +9,40 @@ const getNatureById = async (id) => {
  */
 const dispValks = async (message) => {
     const {author, channel} = message
-    const userValks = await userValkSchema.find({
-        user: author.id
-    }).catch(console.error)
-    const chars = await charSchema.find({}).catch(console.error)
-    if(!userValks || !chars) return message.reply('Some error occured. Please try again!').catch(console.error)
-    const mapped = {}
-    for(const userValk of userValks){
-        const valk = await getValkById(userValk.valk)
-        if(!valk) return message.reply('Some error occured. Please try again!').catch(console.error)
-        if(!mapped[valk.character]){
-            mapped[valk.character] = ''
+    if(!userValks.has(author.id)){
+        const res = await userValkSchema.find({
+            userId: author.id
+        }).catch(console.error)
+        if(!res) return message.reply('Some error occured. Please try again!').catch(console.error)
+        userValks.set(author.id, new Collection())
+        const uv = userValks.get(author.id)
+        for(const uvalk of res){
+            uv.set(uvalk.valkId, uvalk.rank)
         }
-        if(mapped[valk.character].length > 0) mapped[valk.character] += '\n'
-        const nature = await getNatureById(valk.nature)
+    }
+    const uv = userValks.get(author.id)
+    if(!uv) return message.reply('Some error occured. Please try again!').catch(console.error)
+    const mapped = {}
+    for(const userValk of uv.keys()){
+        const valk = valkBattlesuits.get(userValk)
+        if(!valk) return message.reply('Some error occured. Please try again!').catch(console.error)
+        if(!mapped[valk.characterId]){
+            mapped[valk.characterId] = ''
+        }
+        if(mapped[valk.characterId].length > 0) mapped[valk.characterId] += '\n'
+        const nature = valkNature.get(valk.natureId)
         if(!nature) return message.reply('Some error occured. Please try again!').catch(console.error)
-        mapped[valk.character] +=
-            `${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} ${nature.emoji} **${userValk.rank}**`
+        const rank = uv.get(userValk)
+        if(!rank) return message.reply('Some error occured. Please try again!').catch(console.error)
+        mapped[valk.characterId] +=
+            `${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} ${nature.emoji} **${rank.toUpperCase()}**`
     }
     const fields = []
-    for(const char of chars){
-        if(mapped[char._id]){
+    for(const char of valkChars.values()){
+        if(mapped[char._id.toString()]){
             fields.push({
                 name: capitalize(char.name),
-                value: mapped[char._id],
+                value: mapped[char._id.toString()],
                 inline: true
             })
         }
@@ -114,6 +64,14 @@ const dispValks = async (message) => {
     channel.send(embed)
 }
 
+const validRanks = [
+    'b', 'a', 's', 'ss', 'sss'
+]
+
+const rankValues = {
+    'b': 1, 'a': 2, 's': 3, 'ss': 4, 'sss': 5
+}
+
 /**
  * 
  * @param {Message} message 
@@ -128,24 +86,24 @@ const addValks = async (message, valks) => {
             continue
         }
         if(!validRanks.includes(rawValk.rank)){
-            status.push(`❌${rawValk.rank} is not a valid rank!`)
+            status.push(`❌${rawValk.rank.toUpperCase()} is not a valid rank!`)
             continue
         }
-        const valk = await getValk(rawValk.valk)
+        const valk = valkBattlesuits.find(v => v.name === rawValk.valk || v.acronyms.includes(rawValk.valk))
         if(!valk){
-            status.push(`❌${rawValk.valk} is not a valid valkyrja battlesuit!`)
+            status.push(`❌${capitalize(rawValk.valk)} is not a valid valkyrja battlesuit!`)
             continue
         }
         if(rankValues[rawValk.rank] < rankValues[valk.baseRank]){
-            status.push(`❌${capitalize(valk.name)} ${valk.emoji?valk.emoji:''} must have atleast rank \`${valk.baseRank}\`!`)
+            status.push(`❌${capitalize(valk.name)} ${valk.emoji?valk.emoji:''} must have atleast rank \`${valk.baseRank.toUpperCase()}\`!`)
             continue
         }
         const res = await userValkSchema.findOneAndUpdate({
-            user: author.id,
-            valk: valk._id
+            userId: author.id,
+            valkId: valk._id.toString()
         },{
-            user: author.id,
-            valk: valk._id,
+            userId: author.id,
+            valkId: valk._id.toString(),
             rank: rawValk.rank
         },{
             upsert: true,
@@ -155,7 +113,10 @@ const addValks = async (message, valks) => {
             status.push(`❌An error occurred while adding ${capitalize(valk.name)} ${valk.emoji?valk.emoji:''}`)
             continue
         }
-        status.push(`✅**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:''} **${res.rank}**`)
+        if(userValks.has(res.userId)){
+            userValks.get(res.userId).set(res.valkId, res.rank)
+        }
+        status.push(`✅**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:''} **${res.rank.toUpperCase()}**`)
     }
     const embed = new MessageEmbed()
                         .setTitle(`Registered Valkyries for ${author.tag}`)
@@ -187,11 +148,11 @@ module.exports = {
         if(args.length === 0){
             dispValks(message)
         } else {
-            const rawValks = args.join(' ').split(/\s*,\s*/)
+            const rawValks = args.join(' ').toLowerCase().split(/\s*,\s*/)
             const valks = []
             for(const rawValk of rawValks) {
                 const parts = rawValk.split(/\s+/)
-                const rank = parts.pop().toUpperCase()
+                const rank = parts.pop()
                 const valk = parts.join(' ')
                 valks.push({
                     valk: valk,

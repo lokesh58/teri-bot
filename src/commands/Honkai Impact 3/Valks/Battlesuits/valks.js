@@ -1,20 +1,6 @@
 const {Message, MessageEmbed} = require('discord.js')
-const {valkNature} = require('$collections')
-const charSchema = require('$models/Honkai Impact 3/character-schema')
-const natureSchema = require('$models/Honkai Impact 3/nature-schema')
-const valkSchema = require('$models/Honkai Impact 3/valk-schema')
+const {valkNature, valkChars, valkBattlesuits} = require('$collections')
 const capitalize = require('$utils/string-capitalize')
-
-const getNature = async (id) => {
-    let res = valkNature.get(id)
-    if(!res){
-        res = await natureSchema.findById(id).catch(console.error)
-        if (res) {
-            valkNature.set(res._id, res)
-        }
-    }
-    return res
-}
 
 module.exports = {
     name: 'valks',
@@ -25,31 +11,26 @@ module.exports = {
      * @param {Message} message 
      * @param {String} args 
      */
-    run: async (message, args) => {
-        const chars = await charSchema.find({}).catch(console.error)
-        const allvalks = await valkSchema.find({}).catch(console.error)
-        if(!chars || !allvalks) return message.reply('Some error occured. Please try again!').catch(console.error)
+    run: (message, args) => {
         const mapValk = {}
-        for (const valk of allvalks) {
-            if(!mapValk[valk.character]){
-                mapValk[valk.character] = []
+        for (const valk of valkBattlesuits.values()) {
+            if(!mapValk[valk.characterId]){
+                mapValk[valk.characterId] = []
             }
-            mapValk[valk.character].push(valk)
+            const nature = valkNature.get(valk.natureId)
+            if(!nature) return message.reply('Some error occured. Please try again!').catch(console.error)
+            mapValk[valk.characterId].push(
+                `${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} \`${valk.acronyms[0].toUpperCase()}\` ${nature.emoji}`
+            )
         }
         const fields = []
-        for(const char of chars) {
-            const valks = mapValk[char._id]
+        for(const char of valkChars.values()) {
+            const valkList = mapValk[char._id.toString()]
             let valkData = ''
-            if(valks.length === 0){
-                valkData = 'No battlesuit for this character'
+            if(!valkList){
+                valkData = 'No valkyrja for this character'
             }else{
-                for(const valk of valks){
-                    if(valkData.length > 0) valkData += '\n'
-                    const nature = await getNature(valk.nature)
-                    if(!nature) return message.reply('Some error occured. Please try again!').catch(console.error)
-                    valkData += 
-                        `${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} \`${valk.acronyms[0]}\` ${nature.emoji}`
-                }
+                valkData = valkList.join('\n')
             }
             fields.push({
                 name: capitalize(char.name),

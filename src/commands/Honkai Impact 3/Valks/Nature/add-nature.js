@@ -12,27 +12,9 @@ const capitalize = require('$utils/string-capitalize')
 const addNature = async (message, name, emoji) => {
     //Check if name or emoji alreaady exists
     let result = valkNature.find(nature => nature.name === name || nature.emoji === emoji)
-    if(!result) {
-        result = await natureSchema.find({
-            $or: [
-                {name: name},
-                {emoji: emoji}
-            ]
-        }).catch(console.error)
-        if (!result) {
-            message.reply('An error occured. Please try again!').catch(console.error)
-            return
-        }
-        if(result.length > 0) {
-            for(const nature of result) {
-                valkNature.set(nature._id, nature)
-            }
-        }
-        result = result[0]
-    }
     if (result) {
         //Either name or emoji already exists
-        message.reply('The name or emoji already used in another nature. Please check them.').catch(console.error)
+        message.reply('The name or emoji already used in another nature!').catch(console.error)
         return
     }
     result = await new natureSchema({
@@ -44,7 +26,7 @@ const addNature = async (message, name, emoji) => {
         message.reply('Some error occured. Please try again.').catch(console.error)
         return
     }
-    valkNature.set(result._id, result)
+    valkNature.set(result._id.toString(), result)
     const {author, channel} = message
     const embed = new MessageEmbed()
                         .setTitle('Add Nature Successful')
@@ -90,7 +72,6 @@ module.exports = {
             message.reply('Please specify a valid emoji for the nature').catch(console.error)
             return
         }
-        emoji = emoji[0]
-        addNature(message, name, emoji)
+        addNature(message, name, emoji[0])
     }
 }

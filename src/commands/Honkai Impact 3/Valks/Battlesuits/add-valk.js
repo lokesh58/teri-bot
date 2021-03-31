@@ -1,8 +1,6 @@
 const {Message, MessageEmbed, Util} = require('discord.js')
 const {valkBattlesuits, valkChars, valkNature} = require('$collections')
 const valkSchema = require('$models/Honkai Impact 3/valk-schema')
-const natureSchema = require('$models/Honkai Impact 3/nature-schema')
-const charSchema = require('$models/Honkai Impact 3/character-schema')
 const capitalize = require('$utils/string-capitalize')
 
 /**
@@ -18,54 +16,18 @@ const capitalize = require('$utils/string-capitalize')
 const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji) => {
     const valkObj = new Object()
     //Check if name is valid character name -------------------------------------------------------
-    let res = valkChars.findKey(charName => charName.name === name)
-    if (!res) { //Search the database
-        res = await charSchema.findOne({
-            name: name
-        }).catch(console.error)
-        if (!res) return message.reply('The character does not exist in database!').catch(console.error)
-        valkChars.set(res._id, res)
-        res = res._id
-    }
-    valkObj.character = res
+    let res = valkChars.find(char => char.name === name)
+    if (!res) return message.reply('The character does not exist!').catch(console.error)
+    valkObj.characterId = res._id.toString()
 
     //Check if nature is valid ------------------------------------------------------------------------
-    res = valkNature.findKey(nat => nat.name === nature || nat.emoji === nature)
-    if (!res) { //Search the database
-        res = await natureSchema.findOne({
-            $or: [
-                {name: nature},
-                {emoji: nature}
-            ]
-        }).catch(console.error)
-        if (!res) return message.reply('The nature does not exist in database!').catch(console.error)
-        valkNature.set(res._id, res)
-        res = res._id
-    }
-    valkObj.nature = res
+    res = valkNature.find(nat => nat.name === nature.toLowerCase() || nat.emoji === nature)
+    if (!res) return message.reply('The nature does not exist!').catch(console.error)
+    valkObj.natureId = res._id.toString()
 
     //Check if the name or acronyms are not already present---------------------------------------------
     res = valkBattlesuits.find(valk => valk.name === battlesuit || valk.acronyms.some(e => acronyms.includes(e))
                                 || (valk.emoji && emoji && valk.emoji === emoji))
-    if (!res) { //Check if present in database
-        const query = [
-            {name: battlesuit},
-            {acronyms: {$in: acronyms}}
-        ]
-        if (emoji) {
-            query.push({emoji: emoji})
-        }
-        res = await valkSchema.find({
-            $or: query
-        }).catch(console.error)
-        if (!res) return message.reply('Some error occured. Please try again!').catch(console.error)
-        if (res.length > 0) {
-            for (const valk of res) {
-                valkBattlesuits.set(valk._id, valk)
-            }
-        }
-        res = res[0]
-    }
     if (res) return message.reply('The battlesuit name or emoji or acronym already exists in database!').catch(console.error)
     valkObj.name = battlesuit
     valkObj.acronyms = acronyms
@@ -75,19 +37,19 @@ const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji)
     //Add to database
     res = await new valkSchema(valkObj).save().catch(console.error)
     if (!res) return message.reply('Some error occured. Please try again!').catch(console.error)
-    valkBattlesuits.set(res._id, res)
+    valkBattlesuits.set(res._id.toString(), res)
 
     const {author, channel} = message
     const embed = new MessageEmbed()
                         .setTitle('Add Valkyrja Battlesuit Successful')
                         .setDescription('Battlesuit with following details has been added')
-                        .addField('Character Name', capitalize(valkChars.get(res.character)))
+                        .addField('Character Name', capitalize(valkChars.get(res.characterId).name))
                         .addField('Battlesuit Name', capitalize(res.name))
                         .addField(
                             'Nature',
-                            `${capitalize(valkNature.get(res.nature).name)} ${valkNature.get(res.nature).emoji}`
-                        ).addField('Base Rank', res.baseRank)
-                        .addField('Acronyms', res.acronyms.join(', '))
+                            `${capitalize(valkNature.get(res.natureId).name)} ${valkNature.get(res.natureId).emoji}`
+                        ).addField('Base Rank', res.baseRank.toUpperCase())
+                        .addField('Acronyms', res.acronyms.join(', ').toUpperCase())
                         .setColor('00FF00')
                         .setFooter(
                             `Requested by ${author.tag}`,
@@ -103,7 +65,7 @@ const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji)
 }
 
 const validBaseRanks = [
-    'B', 'A', 'S'
+    'b', 'a', 's'
 ]
 
 module.exports = {
@@ -147,15 +109,15 @@ module.exports = {
             return
         }
         let [name, battlesuit, nature, rank, acronyms, emoji] = args
-        rank = rank.toUpperCase()
+        rank = rank.toLowerCase()
         if(!validBaseRanks.includes(rank)) return message.reply('The Base Rank is not valid!').catch(console.error)
-        acronyms = acronyms.toUpperCase().split(/\s+/)
+        acronyms = acronyms.toLowerCase().split(/\s+/)
         if (emoji) {
             emoji = emoji.match(/<a?:.+?:\d+>/)
             if (emoji) {
                 emoji = emoji[0]
             }
         }
-        addValk(message, name.toLowerCase(), battlesuit.toLowerCase(), nature.toLowerCase(), rank, acronyms, emoji)
+        addValk(message, name.toLowerCase(), battlesuit.toLowerCase(), nature, rank, acronyms, emoji)
     }
 }

@@ -1,10 +1,10 @@
 const {Collection} = require('discord.js')
 
-prefixes = new Collection()
-valkNature = new Collection()
-valkChars = new Collection()
-valkBattlesuits = new Collection()
-userValks = new Collection()
+const prefixes = new Collection()
+const valkNature = new Collection()
+const valkChars = new Collection()
+const valkBattlesuits = new Collection()
+const userValks = new Collection()
 
 module.exports = {
     prefixes, valkNature, valkChars, valkBattlesuits, userValks

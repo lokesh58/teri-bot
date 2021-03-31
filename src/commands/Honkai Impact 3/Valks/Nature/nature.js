@@ -1,5 +1,5 @@
 const {Message, MessageEmbed} = require('discord.js')
-const natureSchema = require('$models/Honkai Impact 3/nature-schema')
+const {valkNature} = require('$collections')
 const capitalize = require('$utils/string-capitalize')
 
 module.exports = {
@@ -11,20 +11,14 @@ module.exports = {
      * @param {Message} message 
      * @param {[String]} args 
      */
-    run: async (message, args) => {
-        const natures = await natureSchema.find({}).catch(console.error)
-        if (!natures) {
-            message.reply('Some error occured. Please try again.').catch(console.error)
-            return
-        }
+    run: (message, args) => {
         let list = ''
-        if(natures.length === 0) {
-            list = 'No valkyrja nature has been added yet'
-        } else {
-            for (const nature of natures) {
-                if (list.length > 0) list += '\n'
-                list += `• \`${capitalize(nature.name)}\` ${nature.emoji}`
-            }
+        for (const nature of valkNature.values()) {
+            if (list.length > 0) list += '\n'
+            list += `• \`${capitalize(nature.name)}\` ${nature.emoji}`
+        }
+        if(list.length === 0){
+            list = 'No valkyrja nature has been added yet!'
         }
         const {author, channel} = message
         const embed = new MessageEmbed()

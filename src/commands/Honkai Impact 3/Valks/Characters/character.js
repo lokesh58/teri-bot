@@ -1,5 +1,5 @@
 const {Message, MessageEmbed} = require('discord.js')
-const charSchema = require('$models/Honkai Impact 3/character-schema')
+const {valkChars} = require('$collections')
 const capitalize = require('$utils/string-capitalize')
 
 module.exports = {
@@ -12,12 +12,8 @@ module.exports = {
      * @param {Message} message 
      * @param {[String]} args 
      */
-    run: async (message, args) => {
-        const chars = await charSchema.find({}).catch(console.error)
-        if (!chars) {
-            message.reply('Some error occcured. Please try again!').catch(console.error)
-            return
-        }
+    run: (message, args) => {
+        const chars = Array.from(valkChars.values())
         let list = ''
         if (chars.length === 0) {
             list = 'No character has been added yet'

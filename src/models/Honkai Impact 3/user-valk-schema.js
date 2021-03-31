@@ -6,11 +6,8 @@ const reqString = {
 }
 
 const schema = new Schema({
-    user: reqString,
-    valk: {
-        type: Object, //id of valk in database
-        required: true
-    },
+    userId: reqString,
+    valkId: reqString,
     rank: reqString
 })
 

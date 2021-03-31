@@ -9,23 +9,8 @@ const charSchema = require('$models/Honkai Impact 3/character-schema')
  */
 const addChar = async (name) => {
     //Check if name alreaady in database
-    let result = valkChars.find(charName => charName.name === name)
-    if (!result) {
-        result = await charSchema.find({
-            name: name
-        }).catch(console.error)
-        if (!result) {
-            return 1
-        }
-        if (result.length > 0) {
-            for (const char of result) {
-                valkChars.set(char._id, char)
-            }
-            return 2
-        }
-    } else {
-        return 2
-    }
+    let result = valkChars.find(char => char.name === name)
+    if(result) return 2
     //Add new character to database
     result = await new charSchema({
         name: name
@@ -33,7 +18,7 @@ const addChar = async (name) => {
     if (!result) {
         return 1
     }
-    valkChars.set(result._id, result)
+    valkChars.set(result._id.toString(), result)
     return 0
 }
 
@@ -84,13 +69,13 @@ module.exports = {
                                 author.displayAvatarURL({dynamic: true})
                             ).setTimestamp()
         if (success.length > 0) {
-            embed.addField('Successfully Added', success.join(', '))
+            embed.addField('✅Successfully Added', success.join(', '))
         }
         if (duplicate.length > 0) {
-            embed.addField('Not added as already present', duplicate.join(', '))
+            embed.addField('❌Not added as already present', duplicate.join(', '))
         }
         if (error.length > 0) {
-            embed.addField('Not added due to some error', error.join(', '))
+            embed.addField('❌Not added due to some error', error.join(', '))
         }
         channel.send(embed).catch(console.error)
     }
