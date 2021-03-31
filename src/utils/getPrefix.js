@@ -1,4 +1,4 @@
-const {prefixes} = require('$collections/index')
+const {prefixes} = require('$collections')
 const cmdPrefixSchema = require('$models/command-prefix-schema')
 
 module.exports = async (guildID) => {

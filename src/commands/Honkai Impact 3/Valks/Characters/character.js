@@ -1,5 +1,5 @@
 const {Message, MessageEmbed} = require('discord.js')
-const {valkChars} = require('$collections/index')
+const {valkChars} = require('$collections')
 const capitalize = require('$utils/string-capitalize')
 
 module.exports = {

@@ -1,6 +1,6 @@
 const {Message, MessageEmbed} = require('discord.js')
 const natureSchema = require('$models/Honkai Impact 3/nature-schema')
-const {valkNature} = require('$collections/index')
+const {valkNature} = require('$collections')
 const capitalize = require('$utils/string-capitalize')
 
 /**
