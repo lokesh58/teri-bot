@@ -1,5 +1,5 @@
 const {Message, MessageEmbed, Collection} = require('discord.js')
-const {valkBattlesuits, valkNature, valkChars, userValks} = require('$collections')
+const {valkBattlesuits, valkNature, valkChars, userValks} = require('$collections/index')
 const userValkSchema = require('$models/Honkai Impact 3/user-valk-schema')
 const capitalize = require('$utils/string-capitalize')
 

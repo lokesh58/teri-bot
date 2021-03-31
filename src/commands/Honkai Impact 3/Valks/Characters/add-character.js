@@ -1,5 +1,5 @@
 const {Message, MessageEmbed} = require('discord.js')
-const {valkChars} = require('$collections')
+const {valkChars} = require('$collections/index')
 const charSchema = require('$models/Honkai Impact 3/character-schema')
 
 /**

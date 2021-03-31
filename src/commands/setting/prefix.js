@@ -1,6 +1,6 @@
 const {Message, MessageEmbed} = require('discord.js')
 const getPrefix = require('$utils/getPrefix')
-const {prefixes} = require('$collections')
+const {prefixes} = require('$collections/index')
 const cmdPrefixSchema = require('$models/command-prefix-schema')
 
 /**
