@@ -4,7 +4,8 @@ const capitalize = require('$utils/string-capitalize')
 
 module.exports = {
     name: 'valks',
-    desc: 'Gives the list of all registered valkyrja battlesuits in database',
+    aliases: ['valk', 'v'],
+    desc: 'Gives the list of all valkyries stored in the database',
     category: 'Honkai Impact 3',
     /**
      * 
