@@ -2,67 +2,7 @@ const {Message, MessageEmbed, Collection} = require('discord.js')
 const {valkBattlesuits, valkNature, valkChars, userValks} = require('$collections')
 const userValkSchema = require('$models/Honkai Impact 3/user-valk-schema')
 const capitalize = require('$utils/string-capitalize')
-
-/**
- * 
- * @param {Message} message 
- */
-const dispValks = async (message) => {
-    const {author, channel} = message
-    if(!userValks.has(author.id)){
-        const res = await userValkSchema.find({
-            userId: author.id
-        }).catch(console.error)
-        if(!res) return message.reply('Some error occured. Please try again!').catch(console.error)
-        userValks.set(author.id, new Collection())
-        const uv = userValks.get(author.id)
-        for(const uvalk of res){
-            uv.set(uvalk.valkId, uvalk.rank)
-        }
-    }
-    const uv = userValks.get(author.id)
-    if(!uv) return message.reply('Some error occured. Please try again!').catch(console.error)
-    const mapped = {}
-    for(const userValk of uv.keys()){
-        const valk = valkBattlesuits.get(userValk)
-        if(!valk) return message.reply('Some error occured. Please try again!').catch(console.error)
-        if(!mapped[valk.characterId]){
-            mapped[valk.characterId] = ''
-        }
-        if(mapped[valk.characterId].length > 0) mapped[valk.characterId] += '\n'
-        const nature = valkNature.get(valk.natureId)
-        if(!nature) return message.reply('Some error occured. Please try again!').catch(console.error)
-        const rank = uv.get(userValk)
-        if(!rank) return message.reply('Some error occured. Please try again!').catch(console.error)
-        mapped[valk.characterId] +=
-            `${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} ${nature.emoji} **${rank.toUpperCase()}**`
-    }
-    const fields = []
-    for(const char of valkChars.values()){
-        if(mapped[char._id.toString()]){
-            fields.push({
-                name: capitalize(char.name),
-                value: mapped[char._id.toString()],
-                inline: true
-            })
-        }
-    }
-    if(fields.length === 0){
-        fields.push({
-            name: 'No valkyries added',
-            value: 'Valkyries you register will appear here'
-        })
-    }
-    const embed = new MessageEmbed()
-                        .setTitle(`Valkyries of ${author.tag}`)
-                        .setColor('RANDOM')
-                        .addFields(fields)
-                        .setFooter(
-                            `Requested by ${author.tag}`,
-                            author.displayAvatarURL({dynamic: true})
-                        ).setTimestamp()
-    channel.send(embed)
-}
+const dispValks = require('$utils/Honkai Impact 3/disp-valks')
 
 const validRanks = [
     'b', 'a', 's', 'ss', 'sss'
@@ -116,7 +56,7 @@ const addValks = async (message, valks) => {
         if(userValks.has(res.userId)){
             userValks.get(res.userId).set(res.valkId, res.rank)
         }
-        status.push(`✅**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:''} **${res.rank.toUpperCase()}**`)
+        status.push(`**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:''} **${res.rank.toUpperCase()}**`)
     }
     const embed = new MessageEmbed()
                         .setTitle(`Registered Valkyries for ${author.tag}`)
@@ -146,7 +86,7 @@ module.exports = {
      */
     run: (message, args) => {
         if(args.length === 0){
-            dispValks(message)
+            dispValks(message, message.author)
         } else {
             const rawValks = args.join(' ').toLowerCase().split(/\s*,\s*/)
             const valks = []
