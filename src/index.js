@@ -1,5 +1,6 @@
-const {Client} = require('discord.js')
+require('module-alias/register')
 require('dotenv').config()
+const {Client} = require('discord.js')
 const cmdLoader = require('$utils/command-loader')
 const eventStarter = require('$utils/event-starter')
 
