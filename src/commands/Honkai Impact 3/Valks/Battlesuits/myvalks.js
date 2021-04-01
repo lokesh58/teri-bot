@@ -15,7 +15,7 @@ const rankValues = {
 /**
  * 
  * @param {Message} message 
- * @param {Array} valks each element is an object with property valk, rank (valk is name or acronym of valkyrja)
+ * @param {Array} valks each element is an object with property valk, rank (valk is name or acronym of valkyrie)
  */
 const addValks = async (message, valks) => {
     const {author, channel} = message
@@ -35,7 +35,7 @@ const addValks = async (message, valks) => {
             continue
         }
         if(rankValues[rawValk.rank] < rankValues[valk.baseRank]){
-            status.push(`❌${capitalize(valk.name)} ${valk.emoji?valk.emoji:''} must have atleast rank \`${valk.baseRank.toUpperCase()}\`!`)
+            status.push(`❌${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} must have atleast rank \`${valk.baseRank.toUpperCase()}\`!`)
             continue
         }
         const res = await userValkSchema.findOneAndUpdate({
@@ -56,16 +56,24 @@ const addValks = async (message, valks) => {
         if(userValks.has(res.userId)){
             userValks.get(res.userId).set(res.valkId, res.rank)
         }
-        status.push(`**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:''} **${res.rank.toUpperCase()}**`)
+        status.push(`**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:'-'} **${res.rank.toUpperCase()}**`)
     }
-    const embed = new MessageEmbed()
+    let print = status.splice(0,30)
+    let embed = new MessageEmbed()
                         .setTitle(`Registered Valkyries for ${author.tag}`)
-                        .setDescription(status.join('\n'))
+                        .setDescription(print.join('\n'))
                         .setColor('RANDOM')
-                        .setFooter(
-                            `Requested by ${author.tag}`,
-                            author.displayAvatarURL({dynamic: true})
-                        ).setTimestamp()
+    while(status.length > 0){
+        channel.send(embed).catch(console.error)
+        print = status.splice(0, 30)
+        embed = new MessageEmbed()
+                        .setDescription(print.join('\n'))
+                        .setColor('RANDOM')
+    }
+    embed.setFooter(
+        `Requested by ${author.tag}`,
+        author.displayAvatarURL({dynamic: true})
+    ).setTimestamp()
     channel.send(embed).catch(console.error)
 }
 
