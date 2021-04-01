@@ -13,8 +13,7 @@
   "dependencies": {
     "discord.js": "github:monbrey/discord.js#inline-replies",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.12.1",
-    "shell-quote": "^1.7.2"
+    "mongoose": "^5.12.1"
   },
   "devDependencies": {
     "link-module-alias": "^1.2.0"
