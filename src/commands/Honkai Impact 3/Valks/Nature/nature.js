@@ -4,7 +4,7 @@ const capitalize = require('$utils/string-capitalize')
 
 module.exports = {
     name: 'natures',
-    desc: 'Gives the list of all valkyrja natures stored in the database',
+    desc: 'Gives the list of all valkyrie natures stored in the database',
     category: 'Honkai Impact 3',
     /**
      * 
@@ -18,11 +18,11 @@ module.exports = {
             list += `• \`${capitalize(nature.name)}\` ${nature.emoji}`
         }
         if(list.length === 0){
-            list = 'No valkyrja nature has been added yet!'
+            list = 'No valkyrie nature has been added yet!'
         }
         const {author, channel} = message
         const embed = new MessageEmbed()
-                            .setTitle('List of Valkyrja Natures')
+                            .setTitle('List of Valkyrie Natures')
                             .setDescription(list)
                             .setColor('RANDOM')
                             .setFooter(

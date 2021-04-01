@@ -25,7 +25,7 @@ const addChar = async (name) => {
 module.exports = {
     name: 'add-character',
     aliases: ['addcharacter', 'add_character', 'add-char', 'addchar', 'add_char'],
-    desc: 'Add a new valkyrja character to database',
+    desc: 'Add a new valkyrie character to database',
     expectedArgs: '<character name> (...)',
     parameters:
         `\`<character name>\`: The name of the character
@@ -62,14 +62,14 @@ module.exports = {
         }
         const {author, channel} = message
         const embed = new MessageEmbed()
-                            .setTitle('Add Characters')
+                            .setTitle('Added Characters')
                             .setColor('RANDOM')
                             .setFooter(
                                 `Requested by ${author.tag}`,
                                 author.displayAvatarURL({dynamic: true})
                             ).setTimestamp()
         if (success.length > 0) {
-            embed.addField('✅Successfully Added', success.join(', '))
+            embed.addField('Successfully Added', success.join(', '))
         }
         if (duplicate.length > 0) {
             embed.addField('❌Not added as already present', duplicate.join(', '))

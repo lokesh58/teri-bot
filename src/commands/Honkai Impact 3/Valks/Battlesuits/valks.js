@@ -29,7 +29,7 @@ module.exports = {
             const valkList = mapValk[char._id.toString()]
             let valkData = ''
             if(!valkList){
-                valkData = 'No valkyrja for this character'
+                valkData = 'No battlesuits for this valkyrie'
             }else{
                 valkData = valkList.join('\n')
             }
@@ -41,7 +41,7 @@ module.exports = {
         }
         const {author, channel} = message
         const embed = new MessageEmbed()
-                            .setTitle('List of Valkyrja Battlesuits')
+                            .setTitle('List of Valkyrie Battlesuits')
                             .addFields(fields)
                             .setColor('RANDOM')
                             .setFooter(

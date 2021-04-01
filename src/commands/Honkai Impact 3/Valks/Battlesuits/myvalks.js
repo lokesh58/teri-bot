@@ -1,4 +1,4 @@
-const {Message, MessageEmbed, Collection} = require('discord.js')
+const {Message, MessageEmbed} = require('discord.js')
 const {valkBattlesuits, valkNature, valkChars, userValks} = require('$collections')
 const userValkSchema = require('$models/Honkai Impact 3/user-valk-schema')
 const capitalize = require('$utils/string-capitalize')
@@ -22,7 +22,7 @@ const addValks = async (message, valks) => {
     const status = []
     for(const rawValk of valks) {
         if(!rawValk.rank || !rawValk.valk){
-            status.push(`❌Valkyrja name and rank must be separated by space!`)
+            status.push(`❌Valkyrie name and rank must be separated by space!`)
             continue
         }
         if(!validRanks.includes(rawValk.rank)){
@@ -31,7 +31,7 @@ const addValks = async (message, valks) => {
         }
         const valk = valkBattlesuits.find(v => v.name === rawValk.valk || v.acronyms.includes(rawValk.valk))
         if(!valk){
-            status.push(`❌${capitalize(rawValk.valk)} is not a valid valkyrja battlesuit!`)
+            status.push(`❌${capitalize(rawValk.valk)} is not a valid valkyrie battlesuit!`)
             continue
         }
         if(rankValues[rawValk.rank] < rankValues[valk.baseRank]){
@@ -72,12 +72,17 @@ const addValks = async (message, valks) => {
 module.exports = {
     name: 'my-valks',
     aliases: ['mv', 'myvalks', 'myvalk', 'my-valk'],
-    desc: 'View, add or update your list of battlesuits',
-    expectedArgs: '(<valkyrja> <rank>) (,...)',
+    desc: 'View, add or update your list of valkyrie battlesuits',
+    expectedArgs: '(<valkyrie> <rank>) (,...)',
     parameters:
-        `\`(<valkyrja> <rank>)\`: optional parameter to add a new valkyrja to your list of battlesuits or update the rank if already present.
-        Replace <valkyrja> with the name or acronym of the battlesuit, and <rank> with the battlesuit rank
-        \`(,...)\`: More valkyrja can be added/updated by specifying them after a comma`,
+        `\`(<valkyrie> <rank>)\`: optional, add new valkyrie battlesuit or update the rank of already existing one
+        **\`<valkyrie>\`**: name or acronym of the valkyrie battlesuit
+        **\`<rank>\`**: rank of the valkyrie battlesuit
+        \`(,...)\`: More valkyries can be added/updated by specifying them after a comma
+
+        **Example Usage**:
+        \`mv\` will show a list of all your registered valkyries
+        \`mv WC B, CI A\` will register *WC* at rank *B* and *CI* at rank *A*`,
     category: 'Honkai Impact 3',
     /**
      * 

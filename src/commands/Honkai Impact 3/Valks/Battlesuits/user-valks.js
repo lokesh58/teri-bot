@@ -4,10 +4,12 @@ const dispValks = require('$utils/Honkai Impact 3/disp-valks')
 module.exports = {
     name:'user-valks',
     aliases: ['user-valk', 'uservalks', 'uservalk', 'uvalks', 'uvalk', 'uv'],
-    desc: 'Gives a list of all valkyries of a user',
+    desc: 'Gives a list of all valkyrie battlesuits of a specified user',
     expectedArgs: '<@user>',
     parameters:
-        ``,
+        `\`<@user>\`: mention of the user, or username or discord ID of the user
+        **Example Usage**:
+        \`uv @user123\` will display the valkyries of \`user123\``,
     category: 'Honkai Impact 3',
     /**
      * 

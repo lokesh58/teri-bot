@@ -45,11 +45,11 @@ const addNature = async (message, name, emoji) => {
 module.exports = {
     name: 'add-nature',
     aliases: ['addnature', 'add_nature'],
-    desc: 'Add a new valkyrja nature to database',
+    desc: 'Add a new valkyrie battlesuit nature to database',
     expectedArgs: '<name> <emoji>',
     parameters:
-        `\`<name>\`: Name of the new nature, should not be same as an already existing one
-        \`<emoji>\`: Emoji of the new nature, should not be same as an already existing one`,
+        `\`<name>\`: Name of the new nature
+        \`<emoji>\`: Emoji of the new nature`,
     ownerOnly: true,
     category: 'Honkai Impact 3',
     /**

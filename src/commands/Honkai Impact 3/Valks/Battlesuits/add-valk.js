@@ -71,10 +71,10 @@ const validBaseRanks = [
 module.exports = {
     name: 'add-valk',
     aliases: ['addvalk', 'add_valk'],
-    desc: 'Add a new valkyrja battlesuit to the database',
-    expectedArgs: '<valkyrja name> <battlesuit name> <battlesuit nature> <base rank> <acronyms> (<emoji>)',
+    desc: 'Add a new valkyrie battlesuit to the database',
+    expectedArgs: '<valkyrie name> <battlesuit name> <battlesuit nature> <base rank> <acronyms> (<emoji>)',
     parameters:
-        `\`<valkyrja name>\`: Name of the character
+        `\`<valkyrie name>\`: Name of the character
         \`<battlesuit name>\`: Name of the battlesuit
         \`<battlesuit nature>\`: Nature of the battlesuit (name or emoji)
         \`<base rank>\`: Base rank of the battlesuit (B, A or S)

@@ -4,8 +4,8 @@ const capitalize = require('$utils/string-capitalize')
 
 module.exports = {
     name: 'characters',
-    aliases: ['chars'],
-    desc: 'Gives the list of valkryja characters in database',
+    aliases: ['chars', 'char', 'character'],
+    desc: 'Gives the list of valkryie characters in database',
     category: 'Honkai Impact 3',
     /**
      * 
@@ -25,7 +25,7 @@ module.exports = {
         }
         const {author, channel} = message
         const embed = new MessageEmbed()
-                            .setTitle('List of Valkyrja Characters')
+                            .setTitle('List of Valkyrie Characters')
                             .setDescription(list)
                             .setColor('RANDOM')
                             .setFooter(

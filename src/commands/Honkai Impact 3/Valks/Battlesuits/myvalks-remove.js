@@ -6,11 +6,11 @@ const capitalize = require('$utils/string-capitalize')
 module.exports = {
     name: 'my-valks-remove',
     aliases: ['myvalksremove', 'mvrm'],
-    desc: 'Remove any registered valkyrja battlesuits',
-    expectedArgs: '<valkyrja> (,...)',
+    desc: 'Remove any registered valkyrie battlesuits',
+    expectedArgs: '<valkyrie> (,...)',
     parameters:
-        `\`<valkyrja>\`: Name or acronym of the battlesuit to remove
-        \`(,...)\`: More valkyrja battlesuits can be specified separated by comma
+        `\`<valkyrie>\`: Name or acronym of the valkyrie battlesuit to remove
+        \`(,...)\`: More valkyrie battlesuits can be specified separated by comma
         **Example**: To remove WC and CI, use \`mvrm WC, CI\``,
     category: 'Honkai Impact 3',
     /**
@@ -20,7 +20,7 @@ module.exports = {
      */
     run: async (message, args) => {
         if(!args[0]){
-            return message.reply('Please specify atleast one valkyrja battlesuit to remove!').catch(console.error)
+            return message.reply('Please specify atleast one valkyrie battlesuit to remove!').catch(console.error)
         }
         const rawValks = args.join(' ').toLowerCase().split(/\s*,\s*/)
         const status = []
@@ -28,7 +28,7 @@ module.exports = {
         for(const rawValk of rawValks){
             const valk = valkBattlesuits.find(v => v.name === rawValk || v.acronyms.includes(rawValk))
             if(!valk){
-                status.push(`❌\`${rawValk}\` is not a valid valkyrja battlesuit!`)
+                status.push(`❌\`${rawValk}\` is not a valid valkyrie battlesuit!`)
                 continue
             }
             const res = await userValkSchema.findOneAndDelete({
@@ -42,7 +42,7 @@ module.exports = {
             if(userValks.has(author.id)){
                 userValks.get(author.id).delete(valk._id.toString())
             }
-            status.push(`✅**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:'-'}`)
+            status.push(`**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:'-'}`)
         }
         const embed = new MessageEmbed()
                             .setTitle(`Valkyries Removed for ${author.tag}`)
