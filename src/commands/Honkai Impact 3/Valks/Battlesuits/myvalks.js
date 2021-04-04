@@ -5,12 +5,8 @@ const capitalize = require('$utils/string-capitalize')
 const dispValks = require('$utils/Honkai Impact 3/disp-valks')
 
 const validRanks = [
-    'b', 'a', 's', 'ss', 'sss'
+    'b', 'a', 's', 's1', 's2', 'ss', 'ss1', 'ss2', 'ss3', 'sss'
 ]
-
-const rankValues = {
-    'b': 1, 'a': 2, 's': 3, 'ss': 4, 'sss': 5
-}
 
 /**
  * 
@@ -34,7 +30,7 @@ const addValks = async (message, valks) => {
             status.push(`❌${capitalize(rawValk.valk)} is not a valid valkyrie battlesuit!`)
             continue
         }
-        if(rankValues[rawValk.rank] < rankValues[valk.baseRank]){
+        if(validRanks.indexOf(rawValk.rank) < validRanks.indexOf(valk.baseRank)){
             status.push(`❌${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} must have atleast rank \`${valk.baseRank.toUpperCase()}\`!`)
             continue
         }
