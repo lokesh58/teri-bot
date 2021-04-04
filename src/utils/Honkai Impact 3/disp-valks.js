@@ -19,7 +19,7 @@ module.exports = async (message, target) => {
         userValks.set(target.id, new Collection())
         const uv = userValks.get(target.id)
         for(const uvalk of res){
-            uv.set(uvalk.valkId, uvalk.rank)
+            uv.set(uvalk.valkId, uvalk)
         }
     }
     const uv = userValks.get(target.id)
@@ -34,10 +34,11 @@ module.exports = async (message, target) => {
         if(mapped[valk.characterId].length > 0) mapped[valk.characterId] += '\n'
         const nature = valkNature.get(valk.natureId)
         if(!nature) return message.reply('Some error occured. Please try again!').catch(console.error)
-        const rank = uv.get(userValk)
-        if(!rank) return message.reply('Some error occured. Please try again!').catch(console.error)
-        mapped[valk.characterId] +=
-            `${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} ${nature.emoji} **${rank.toUpperCase()}**`
+        const ranks = uv.get(userValk)
+        if(!ranks.rank) return message.reply('Some error occured. Please try again!').catch(console.error)
+        let data = `${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} ${nature.emoji} **${ranks.rank.toUpperCase()}**`
+        if(ranks.coreRank) data += ` ${valk.augEmoji} **${ranks.coreRank}⭐**`
+        mapped[valk.characterId] += data
     }
     const fields = []
     for(const char of valkChars.values()){

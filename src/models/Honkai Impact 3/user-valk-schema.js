@@ -8,7 +8,8 @@ const reqString = {
 const schema = new Schema({
     userId: reqString,
     valkId: reqString,
-    rank: reqString
+    rank: reqString,
+    coreRank: String
 })
 
 const name = 'user-valks'

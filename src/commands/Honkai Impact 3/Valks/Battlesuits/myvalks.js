@@ -1,5 +1,5 @@
 const {Message, MessageEmbed} = require('discord.js')
-const {valkBattlesuits, valkNature, valkChars, userValks} = require('$collections')
+const {valkBattlesuits, userValks} = require('$collections')
 const userValkSchema = require('$models/Honkai Impact 3/user-valk-schema')
 const capitalize = require('$utils/string-capitalize')
 const dispValks = require('$utils/Honkai Impact 3/disp-valks')
@@ -7,6 +7,15 @@ const dispValks = require('$utils/Honkai Impact 3/disp-valks')
 const validRanks = [
     'b', 'a', 's', 's1', 's2', 'ss', 'ss1', 'ss2', 'ss3', 'sss'
 ]
+
+const validCores = [
+    '1', '2', '3', '4', '5', '6'
+]
+
+const coreRequirement = {
+    'a': ['a', 's', 's', 'ss', 'ss', 'sss'],
+    's': ['s', 's', 's', 's', 'ss', 'sss']
+}
 
 /**
  * 
@@ -21,7 +30,9 @@ const addValks = async (message, valks) => {
             status.push(`❌Valkyrie name and rank must be separated by space!`)
             continue
         }
-        if(!validRanks.includes(rawValk.rank)){
+        const isValidRank = validRanks.includes(rawValk.rank)
+        const isValidCore = validCores.includes(rawValk.rank)
+        if(!isValidRank && !isValidCore){
             status.push(`❌${rawValk.rank.toUpperCase()} is not a valid rank!`)
             continue
         }
@@ -30,18 +41,48 @@ const addValks = async (message, valks) => {
             status.push(`❌${capitalize(rawValk.valk)} is not a valid valkyrie battlesuit!`)
             continue
         }
-        if(validRanks.indexOf(rawValk.rank) < validRanks.indexOf(valk.baseRank)){
+        if(isValidRank && validRanks.indexOf(rawValk.rank) < validRanks.indexOf(valk.baseRank)){
             status.push(`❌${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} must have atleast rank \`${valk.baseRank.toUpperCase()}\`!`)
             continue
+        }
+        if(isValidCore){
+            if(!valk.augEmoji){
+                status.push(`❌${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} does not have an augment!`)
+                continue
+            }
+            //Check if user already has the valk
+            let res = null
+            if(!userValks.has(author.id)){
+                res = await userValkSchema.findOne({
+                    userId: author.id,
+                    valkId: valk._id.toString()
+                }).catch(console.error)
+            }else{
+                res = userValks.get(author.id).get(valk._id.toString())
+            }
+            if(!res){
+                status.push(`❌You don't own ${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'}!`)
+                continue
+            }
+            const reqRank = coreRequirement[valk.baseRank][+rawValk.rank-1]
+            if(validRanks.indexOf(res.rank) < validRanks.indexOf(reqRank)){
+                status.push(`❌${capitalize(valk.name)} ${valk.emoji?valk.emoji:'-'} must have atleast rank \`${reqRank.toUpperCase()}\`!`)
+                continue
+            }
+        }
+        const query = {
+            userId: author.id,
+            valkId: valk._id.toString()
+        }
+        if(isValidRank){
+            query.rank = rawValk.rank
+        }else{
+            query.coreRank = rawValk.rank
         }
         const res = await userValkSchema.findOneAndUpdate({
             userId: author.id,
             valkId: valk._id.toString()
-        },{
-            userId: author.id,
-            valkId: valk._id.toString(),
-            rank: rawValk.rank
-        },{
+        }, query, {
             upsert: true,
             new: true
         }).catch(console.error)
@@ -50,9 +91,13 @@ const addValks = async (message, valks) => {
             continue
         }
         if(userValks.has(res.userId)){
-            userValks.get(res.userId).set(res.valkId, res.rank)
+            userValks.get(res.userId).set(res.valkId, res)
         }
-        status.push(`**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:'-'} **${res.rank.toUpperCase()}**`)
+        let rankStat = rawValk.rank.toUpperCase()
+        if(isValidCore){
+            rankStat += '⭐'
+        }
+        status.push(`**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:'-'} **${rankStat}**`)
     }
     let print = status.splice(0,30)
     let embed = new MessageEmbed()
@@ -86,7 +131,8 @@ module.exports = {
 
         **Example Usage**:
         \`mv\` will show a list of all your registered valkyries
-        \`mv WC B, CI A\` will register *WC* at rank *B* and *CI* at rank *A*`,
+        \`mv WC B, CI A\` will register *WC* at rank *B* and *CI* at rank *A*
+        \`mv DK 5\` will register *DK* at augment core level 5⭐`,
     category: 'Honkai Impact 3',
     /**
      * 
