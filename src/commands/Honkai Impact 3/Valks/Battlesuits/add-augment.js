@@ -18,7 +18,7 @@ const addAug = async (message, name, augEmoji) => {
         augEmoji: augEmoji
     }, {
         new: true
-    })
+    }).catch(console.error)
     if(!res){
         return message.reply('Some error occured. Please try again!').catch(console.error)
     }
@@ -33,7 +33,7 @@ const addAug = async (message, name, augEmoji) => {
                             author.displayAvatarURL({dynamic: true})
                         ).setColor('RANDOM')
                         .setTimestamp()
-    channel.send(embed)
+    channel.send(embed).catch(console.error)
 }
 
 module.exports = {
