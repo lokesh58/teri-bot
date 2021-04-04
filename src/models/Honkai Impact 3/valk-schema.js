@@ -14,7 +14,8 @@ const valkSchema = new Schema({
         type: [String],
         required: true
     },
-    emoji: String
+    emoji: String,
+    augEmoji: String
 })
 
 const name = 'valk-battlesuits'
