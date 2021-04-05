@@ -5,7 +5,7 @@ const capitalize = require('$utils/string-capitalize')
 const dispValks = require('$utils/Honkai Impact 3/disp-valks')
 
 const validRanks = [
-    'b', 'a', 's', 's1', 's2', 'ss', 'ss1', 'ss2', 'ss3', 'sss'
+    'b', 'a', 's', 's1', 's2', 's3', 'ss', 'ss1', 'ss2', 'ss3', 'sss'
 ]
 
 const validCores = [
