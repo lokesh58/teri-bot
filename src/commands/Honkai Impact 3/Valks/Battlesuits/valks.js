@@ -76,7 +76,7 @@ const dispValk = (message, name) => {
                         .addField('Acronyms', `\`${valk.acronyms.join('\`, \`').toUpperCase()}\``)
                         .setColor('RANDOM')
                         .setFooter(
-                            `Requested by ${author.id}`,
+                            `Requested by ${author.tag}`,
                             author.displayAvatarURL({dynamic: true})
                         ).setTimestamp()
     if(valk.augEmoji){
