@@ -42,8 +42,7 @@ const changePrefix = async (message, newPrefix) => {
         const embed = new MessageEmbed()
                             .setTitle(`Prefix change for \`${guild.name}\``)
                             .setDescription(
-                                `**Old Prefix:** \`${result.prefix}\`
-                                **New Prefix:** \`${newPrefix}\``
+                                `**Old Prefix:** \`${result.prefix}\`\n**New Prefix:** \`${newPrefix}\``
                             ).setFooter(
                                 `Requested by ${author.tag}`,
                                 author.displayAvatarURL({dynamic: true})

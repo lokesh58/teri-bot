@@ -124,15 +124,7 @@ module.exports = {
     desc: 'View, add or update your list of valkyrie battlesuits',
     expectedArgs: '(<valkyrie> <rank>) (,...)',
     parameters:
-        `\`(<valkyrie> <rank>)\`: optional, add new valkyrie battlesuit or update the rank of already existing one
-        **\`<valkyrie>\`**: name or acronym of the valkyrie battlesuit
-        **\`<rank>\`**: rank of the valkyrie battlesuit
-        \`(,...)\`: More valkyries can be added/updated by specifying them after a comma
-
-        **Example Usage**:
-        \`mv\` will show a list of all your registered valkyries
-        \`mv WC B, CI A\` will register *WC* at rank *B* and *CI* at rank *A*
-        \`mv DK 5\` will register *DK* at augment core level 5⭐`,
+        `\`(<valkyrie> <rank>)\`: optional, add new valkyrie battlesuit or update the rank of already existing one\n**\`<valkyrie>\`**: name or acronym of the valkyrie battlesuit\n**\`<rank>\`**: rank of the valkyrie battlesuit\n\`(,...)\`: More valkyries can be added/updated by specifying them after a comma\n\n**Example Usage**:\n\`mv\` will show a list of all your registered valkyries\n\`mv WC B, CI A\` will register *WC* at rank *B* and *CI* at rank *A*\n\`mv DK 5\` will register *DK* at augment core level 5⭐`,
     category: 'Honkai Impact 3',
     /**
      * 

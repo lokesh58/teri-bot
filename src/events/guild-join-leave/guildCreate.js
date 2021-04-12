@@ -13,11 +13,9 @@ module.exports = (client) => {
             prefix = process.env.DEFAULT_PREFIX
         }
         const embed = new MessageEmbed()
-                            .setTitle(`Thank You for Inviting me to ${guild.name} 😁`)
+                            .setTitle(`Thank You for Inviting me to ${guild.name}!`)
                             .setDescription(
-                                `My prefix here is: \`${prefix}\`
-                                Use \`${prefix}help\` to get a list of all my commands
-                                Use \`${prefix}prefix\` to change my prefix`
+                                `My prefix here is: \`${prefix}\`\nUse \`${prefix}help\` to get a list of all my commands\nUse \`${prefix}prefix\` to change my prefix`
                             ).setColor('RANDOM')
                             .setTimestamp()
         guild.systemChannel?.send(embed).catch(console.error)

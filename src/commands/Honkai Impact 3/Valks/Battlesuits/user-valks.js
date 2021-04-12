@@ -7,9 +7,7 @@ module.exports = {
     desc: 'Gives a list of all valkyrie battlesuits of a specified user',
     expectedArgs: '<@user>',
     parameters:
-        `\`<@user>\`: mention of the user, or username or discord ID of the user
-        **Example Usage**:
-        \`uv @user123\` will display the valkyries of \`user123\``,
+        `\`<@user>\`: mention of the user, or username or discord ID of the user\n**Example Usage**:\n\`uv @user123\` will display the valkyries of \`user123\``,
     category: 'Honkai Impact 3',
     /**
      * 

@@ -28,9 +28,7 @@ module.exports = {
     desc: 'Add a new valkyrie character to database',
     expectedArgs: '<character name> (...)',
     parameters:
-        `\`<character name>\`: The name of the character
-        \`(...)\`: Optional, more character names can be added, separated by space
-        **Note**: To specify names with multiple words, enclose them in quotes eg: \"Raiden Mei\" \"Fu Hua\"`,
+        `\`<character name>\`: The name of the character\n\`(...)\`: Optional, more character names can be added, separated by space\n**Note**: To specify names with multiple words, enclose them in quotes eg: \"Raiden Mei\" \"Fu Hua\"`,
     ownerOnly: true,
     category: 'Honkai Impact 3',
     /**

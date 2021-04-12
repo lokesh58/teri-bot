@@ -9,9 +9,7 @@ module.exports = {
     desc: 'Remove any registered valkyrie battlesuits',
     expectedArgs: '<valkyrie> (,...)',
     parameters:
-        `\`<valkyrie>\`: Name or acronym of the valkyrie battlesuit to remove
-        \`(,...)\`: More valkyrie battlesuits can be specified separated by comma
-        **Example**: To remove WC and CI, use \`mvrm WC, CI\``,
+        `\`<valkyrie>\`: Name or acronym of the valkyrie battlesuit to remove\n\`(,...)\`: More valkyrie battlesuits can be specified separated by comma\n**Example**: To remove WC and CI, use \`mvrm WC, CI\``,
     category: 'Honkai Impact 3',
     /**
      * 

@@ -31,9 +31,7 @@ const addNature = async (message, name, emoji) => {
     const embed = new MessageEmbed()
                         .setTitle('Add Nature Successful')
                         .setDescription(
-                            `*The following nature has been added*
-                            **Name:** \`${capitalize(result.name)}\`
-                            **Emoji:** ${result.emoji}`
+                            `*The following nature has been added*\n**Name:** \`${capitalize(result.name)}\`\n**Emoji:** ${result.emoji}`
                         ).setColor('00FF00')
                         .setFooter(
                             `Requested by ${author.tag}`,
@@ -48,8 +46,7 @@ module.exports = {
     desc: 'Add a new valkyrie battlesuit nature to database',
     expectedArgs: '<name> <emoji>',
     parameters:
-        `\`<name>\`: Name of the new nature
-        \`<emoji>\`: Emoji of the new nature`,
+        `\`<name>\`: Name of the new nature\n\`<emoji>\`: Emoji of the new nature`,
     ownerOnly: true,
     category: 'Honkai Impact 3',
     /**

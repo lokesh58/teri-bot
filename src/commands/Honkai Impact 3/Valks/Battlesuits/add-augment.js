@@ -42,9 +42,7 @@ module.exports = {
     desc: 'Add augment core to an existing valkyrie',
     expectedArgs: '<valkyrie> <augment emoji>',
     parameters:
-        `\`<valkyrie>\`: The name or acronym of the valkyrie to whom to add the augment
-        \`<augment emoji>\`: Emoji for the augment
-        **Note**: To specify valkyrie name with multiple words, enclose it within quotes`,
+        `\`<valkyrie>\`: The name or acronym of the valkyrie to whom to add the augment\n\`<augment emoji>\`: Emoji for the augment\n**Note**: To specify valkyrie name with multiple words, enclose it within quotes`,
     ownerOnly: true,
     category: 'Honkai Impact 3',
     /**

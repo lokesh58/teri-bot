@@ -74,13 +74,7 @@ module.exports = {
     desc: 'Add a new valkyrie battlesuit to the database',
     expectedArgs: '<valkyrie name> <battlesuit name> <battlesuit nature> <base rank> <acronyms> (<emoji>)',
     parameters:
-        `\`<valkyrie name>\`: Name of the character
-        \`<battlesuit name>\`: Name of the battlesuit
-        \`<battlesuit nature>\`: Nature of the battlesuit (name or emoji)
-        \`<base rank>\`: Base rank of the battlesuit (B, A or S)
-        \`<acronyms>\`: Acronyms for the battlesuit, if specifying more than one, enclose all within quotes and separate by space
-        \`(emoji)\`: Optional, emoji for the battlesuit
-        **Note**: To specify names with multiple words, enclose them in quotes eg: \"Kiana Kaslana\", \"White Comet\"`,
+        `\`<valkyrie name>\`: Name of the character\n\`<battlesuit name>\`: Name of the battlesuit\n\`<battlesuit nature>\`: Nature of the battlesuit (name or emoji)\n\`<base rank>\`: Base rank of the battlesuit (B, A or S)\n\`<acronyms>\`: Acronyms for the battlesuit, if specifying more than one, enclose all within quotes and separate by space\n\`(emoji)\`: Optional, emoji for the battlesuit\n**Note**: To specify names with multiple words, enclose them in quotes eg: \"Kiana Kaslana\", \"White Comet\"`,
     ownerOnly: true,
     category: 'Honkai Impact 3',
     /**
