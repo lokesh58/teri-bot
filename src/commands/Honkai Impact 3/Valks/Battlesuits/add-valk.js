@@ -1,5 +1,5 @@
 const {Message, MessageEmbed, Util} = require('discord.js')
-const {valkBattlesuits, valkChars, valkNature} = require('$collections')
+const {valkBattlesuits, valkChars, valkNature, validBaseRanks} = require('$collections')
 const valkSchema = require('$models/Honkai Impact 3/valk-schema')
 const capitalize = require('$utils/string-capitalize')
 
@@ -63,10 +63,6 @@ const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji)
     }
     channel.send(embed).catch(console.error)
 }
-
-const validBaseRanks = [
-    'b', 'a', 's'
-]
 
 module.exports = {
     name: 'add-valk',
