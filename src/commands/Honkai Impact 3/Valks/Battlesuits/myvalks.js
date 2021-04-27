@@ -38,7 +38,7 @@ const addValks = async (message, valks) => {
         }
         const valk = valkBattlesuits.find(v => v.name === rawValk.valk || v.acronyms.includes(rawValk.valk))
         if(!valk){
-            status.push(`❌${capitalize(rawValk.valk)} is not a valid valkyrie battlesuit!`)
+            status.push(`❌${capitalize(rawValk.valk)} is not a valid valkyrie battlesuit! Did you forget to add commas between different valkyries?`)
             continue
         }
         if(isValidRank && validRanks.indexOf(rawValk.rank) < validRanks.indexOf(valk.baseRank)){

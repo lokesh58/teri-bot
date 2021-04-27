@@ -26,7 +26,7 @@ module.exports = {
         for(const rawValk of rawValks){
             const valk = valkBattlesuits.find(v => v.name === rawValk || v.acronyms.includes(rawValk))
             if(!valk){
-                status.push(`❌\`${rawValk}\` is not a valid valkyrie battlesuit!`)
+                status.push(`❌\`${rawValk}\` is not a valid valkyrie battlesuit! Did you forget to add commas?`)
                 continue
             }
             const res = await userValkSchema.findOneAndDelete({
