@@ -1,5 +1,5 @@
 const {Message} = require('discord.js')
-const translator = require('google-translate-api')
+const translator = require('@iamtraction/google-translate')
 
 module.exports = {
     name: 'translate',
@@ -22,7 +22,7 @@ module.exports = {
             if(!tltext){
                 message.reply('Some error occurred. Please try again!').catch(console.error)
             }else{
-                message.reply(tltext)
+                message.reply(tltext.text).catch(console.error)
             }
         }
     }
