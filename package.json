@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@iamtraction/google-translate": "^1.1.2",
+    "@iamtraction/google-translate": "github:iamtraction/google-translate",
     "discord.js": "github:monbrey/discord.js#inline-replies",
     "dotenv": "^8.2.0",
     "module-alias": "^2.2.2",
