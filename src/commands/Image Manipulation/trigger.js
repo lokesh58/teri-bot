@@ -30,7 +30,12 @@ module.exports = {
             user = message.author
         }
         const avatar = user.displayAvatarURL({format: 'png'})
-        const triggered = canvacord.Canvas.trigger(avatar)
-        message.channel.send(new MessageAttachment(triggered, 'triggered.gif')).catch(console.error)
+        const triggered = await canvacord.Canvas.trigger(avatar).catch(console.error)
+        message.channel.send(
+            new MessageAttachment(
+                triggered,
+                `${user.username}_triggered.gif`
+            )
+        ).catch(console.error)
     }
 }
