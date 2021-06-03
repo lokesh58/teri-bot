@@ -5,7 +5,7 @@ module.exports = {
     name: 'affect',
     desc: 'Affects a mentioned user',
     expectedArgs: '<@user>',
-    parameters: `\`<@user>\`: mention or username or discord ID of the user\n**Note:** If the user is not specified or not found, then the author of message is triggered`,
+    parameters: `\`<@user>\`: mention or username or discord ID of the user\n**Note:** If the user is not specified or not found, then the author of message is used`,
     category: 'Image Manipulation',
     /**
      * 
