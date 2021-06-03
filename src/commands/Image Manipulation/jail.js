@@ -34,7 +34,7 @@ module.exports = {
         message.channel.send(
             new MessageAttachment(
                 jailed,
-                `${user.username}_jailed.gif`
+                `${user.username}_jailed.png`
             )
         ).catch(console.error)
     }
