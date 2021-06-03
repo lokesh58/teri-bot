@@ -34,7 +34,7 @@ module.exports = {
         message.channel.send(
             new MessageAttachment(
                 inverted,
-                `${user.username}_inverted.gif`
+                `${user.username}_inverted.png`
             )
         ).catch(console.error)
     }
