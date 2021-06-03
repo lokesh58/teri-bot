@@ -8,6 +8,7 @@ const canvacord = require('canvacord')
  */
 const findUser = (client, query) => {
     if(!query) return null
+    query = query.toLowerCase()
     let user = client.users.resolve(query)
     if(!user){
         user = client.users.cache.find(

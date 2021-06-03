@@ -8,6 +8,7 @@ const canvacord = require('canvacord')
  */
 const findUser = (client, query) => {
     if(!query) return null
+    query = query.toLowerCase()
     let user = client.users.resolve(query)
     if(!user){
         user = client.users.cache.find(
@@ -22,7 +23,7 @@ module.exports = {
     name: 'fuse',
     desc: 'Fuse pfp of two mentioned users',
     expectedArgs: '<@user1> <@user2>',
-    parameters: `\`<@user1>\`: face for girl in red color\n\`<@user2>\`: face for the boy\n**Note:** If a user is not specified or not found, then the author of message is used`,
+    parameters: `\`<@user1>\`: User1 (Less visible)\n\`<@user2>\`: User2 (More visible)\n**Note:** If a user is not specified or not found, then the author of message is used`,
     category: 'Image Manipulation',
     /**
      * 
