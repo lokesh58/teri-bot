@@ -15,8 +15,14 @@ module.exports = (client) => {
             if (message.author.bot || message.channel.type === 'dm') return
             const {guild, author, content, channel} = message
             const blist = await getBlacklist(guild.id)
-            const found = content.split(/\s+/).filter(w => blist.indexOf(w.toLowerCase()) >= 0)
-            if(found.length > 0){
+            let found = false
+            for(const bword of blist){
+                if(content.includes(bword)){
+                    found = true
+                    break
+                }
+            }
+            if(found){
                 message.delete({reason: 'Contains bad words'}).catch(console.error)
                 channel.send(`${author}, your message was deleted due to: Contains bad words`).then(
                     (msg) => {
