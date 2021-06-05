@@ -8,7 +8,8 @@ const userValks = new Collection()
 const validBaseRanks = [
     'b', 'a', 's'
 ]
+const blacklist = new Collection()
 
 module.exports = {
-    prefixes, valkNature, valkChars, valkBattlesuits, userValks, validBaseRanks
+    prefixes, valkNature, valkChars, valkBattlesuits, userValks, validBaseRanks, blacklist
 }
