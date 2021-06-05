@@ -125,8 +125,10 @@ module.exports = {
             addWords(message, args.map(v => v.toLowerCase()))
         }else if(query === 'delete'){
             delWords(message, args.map(v => v.toLowerCase()))
-        }else{
+        }else if(query === 'view' || !query){
             viewList(message)
+        }else{
+            message.reply('Invalid query!').catch(console.error)
         }
     }
 }
