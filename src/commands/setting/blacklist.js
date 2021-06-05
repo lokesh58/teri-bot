@@ -30,11 +30,45 @@ const getBlacklist = async (guildId) => {
 
 /**
  * 
+ * @param {String} guildId 
+ * @param {[String]} blist 
+ * @returns status of adding
+ */
+const updateBlacklist = async (guildId, blist) => {
+    const res = await schema.findByIdAndUpdate(guildId, {
+        blacklist: blist
+    }, {
+        new: true
+    }).catch(console.error)
+    if(!res) return false
+    blacklist.set(guildId, res.blacklist)
+}
+
+/**
+ * 
  * @param {Message} message 
  * @param {[String]} words 
  */
 const addWords = async (message, words) => {
-    message.reply('Under development!').catch(console.error)
+    const {guild, channel, author} = message
+    const blist = await getBlacklist(guild.id)
+    words = words.filter(w => blist.indexOf(w) < 0) //Remove duplicate words
+    if(!updateBlacklist(guild.id, blist.concat(words))){
+        return message.reply('Some error occurred. Please try again!').catch(console.error)
+    }
+    const embed = new MessageEmbed()
+                        .setTitle(`Blacklisted Words Added for ${guild.name}`)
+                        .setThumbnail(guild.iconURL({dynamic: true}))
+                        .setDescription(
+                            words.length === 0 ?
+                                'No new blacklist words were added!' :
+                                `\`${words.join('\`, \`')}\``
+                        ).setColor('RANDOM')
+                        .setFooter(
+                            `Requested by ${author.tag}`,
+                            author.displayAvatarURL({dynamic: true})
+                        ).setTimestamp()
+    channel.send(embed).catch(console.error)
 }
 
 /**
