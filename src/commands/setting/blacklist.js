@@ -1,5 +1,7 @@
 const {Message, MessageEmbed} = require('discord.js')
 const getBlacklist = require('$utils/getBlacklist')
+const schema = require('$models/blacklist-schema')
+const {blacklist} = require('$collections')
 
 /**
  * 
