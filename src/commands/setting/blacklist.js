@@ -77,7 +77,25 @@ const addWords = async (message, words) => {
  * @param {[String]} words 
  */
 const delWords = async (message, words) => {
-    message.reply('Under development!').catch(console.error)
+    const {guild, channel, author} = message
+    const blist = await getBlacklist(guild.id)
+    words = words.filter(w => blist.indexOf(w) >= 0) //Remove words not in blacklist (only needed for output)
+    if(!updateBlacklist(guild.id, blist.filter(w => words.indexOf(w) < 0))){
+        return message.reply('Some error occurred. Please try again!').catch(console.error)
+    }
+    const embed = new MessageEmbed()
+                        .setTitle(`Blacklisted Words Removed for ${guild.name}`)
+                        .setThumbnail(guild.iconURL({dynamic: true}))
+                        .setDescription(
+                            words.length === 0 ?
+                                'No blacklisted words were removed!' :
+                                `\`${words.join('\`, \`')}\``
+                        ).setColor('RANDOM')
+                        .setFooter(
+                            `Requested by ${author.tag}`,
+                            author.displayAvatarURL({dynamic: true})
+                        ).setTimestamp()
+    channel.send(embed).catch(console.error)
 }
 
 /**
