@@ -102,7 +102,7 @@ module.exports = {
     name: 'blacklist',
     desc: 'Add/delete/view blacklisted words for the server. Messages with blacklisted words will automatically be deleted!',
     expectedArgs: '<query> [<options>]',
-    parameters: '\`<query>\`: The query should be one of \`add\`, \`delete\`, \`view\`. By default the query will be taken as \`view\`.\n\`[<options>]\`: The options for the particular query.\n•__add__: Space separated list of words to add to blacklist. Wrods are NOT case-sensitive and repeated words will only be added once.\n•__delete__: Space separated list of words to be removed from blacklist. Words not present will not be removed.\n•__view__: No options needed!',
+    parameters: '\`<query>\`: The query should be one of \`add\`, \`delete\`, \`view\`. By default the query will be taken as \`view\`.\n\`[<options>]\`: The options for the particular query.\n•__add__: Space separated list of words to add to blacklist. Words are NOT case-sensitive and repeated words will only be added once.\n•__delete__: Space separated list of words to be removed from blacklist. Words not present will not be removed.\n•__view__: No options needed!',
     requiredPermissions: ['MANAGE_GUILD'],
     category: 'setting',
     /**
