@@ -15,9 +15,10 @@ module.exports = (client) => {
             if (message.author.bot || message.channel.type === 'dm') return
             const {guild, author, content, channel} = message
             const blist = await getBlacklist(guild.id)
+            const text = content.toLowerCase()
             let found = false
             for(const bword of blist){
-                if(content.includes(bword)){
+                if(text.includes(bword)){
                     found = true
                     break
                 }
