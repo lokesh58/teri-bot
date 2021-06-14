@@ -1,6 +1,6 @@
 const {Message, MessageEmbed} = require('discord.js')
 const translator = require('@iamtraction/google-translate')
-const ISO6391 = require('iso-639-1')
+const ISO6391 = require('@iamtraction/google-translate/src/languages')
 
 module.exports = {
     name: 'translate',
@@ -27,7 +27,7 @@ module.exports = {
             const embed = new MessageEmbed()
                                 .setTitle('Translation Results')
                                 .setDescription(
-                                    `**Detected Language**: ${ISO6391.getName(res.from.language.iso)}`
+                                    `**Detected Language**: ${ISO6391[res.from.language.iso.toLowerCase()]}`
                                 ).addField('Translated From',
                                     res.from.text.value || text
                                 ).addField('Translation Result', res.text)
