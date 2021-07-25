@@ -3,6 +3,7 @@ require('dotenv').config()
 const {Client, Intents} = require('discord.js')
 const cmdLoader = require('$utils/command-loader')
 const eventStarter = require('$utils/event-starter')
+const { DiscordTogether } = require('discord-together')
 
 const client = new Client({
     partials: [
@@ -18,6 +19,7 @@ client.owners = [
     '651011187076759553',
     '322078119018364938'
 ]
+client.discordTogether = new DiscordTogether(client)
 cmdLoader(client)
 eventStarter(client)
 client.login(process.env.BOT_TOKEN)
