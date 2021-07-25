@@ -47,7 +47,7 @@ const addWords = async (message, words) => {
                             `Requested by ${author.tag}`,
                             author.displayAvatarURL({dynamic: true})
                         ).setTimestamp()
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 /**
@@ -79,7 +79,7 @@ const delWords = async (message, words) => {
                             `Requested by ${author.tag}`,
                             author.displayAvatarURL({dynamic: true})
                         ).setTimestamp()
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 /**
@@ -104,7 +104,7 @@ const viewList = async (message) => {
                             `Requested by ${author.tag}`,
                             author.displayAvatarURL({dynamic: true})
                         ).setTimestamp()
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 module.exports = {

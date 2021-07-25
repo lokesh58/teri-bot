@@ -17,7 +17,7 @@
     "@iamtraction/google-translate": "github:iamtraction/google-translate",
     "canvacord": "^5.2.1",
     "discord-together": "^1.1.31",
-    "discord.js": "github:monbrey/discord.js#inline-replies",
+    "discord.js": "^13.0.0-dev.4886ae2.1627171445",
     "dotenv": "^8.2.0",
     "module-alias": "^2.2.2",
     "mongoose": "^5.12.1"

@@ -32,6 +32,6 @@ module.exports = {
                                 `Requested by ${author.tag}`,
                                 author.displayAvatarURL({dynamic: true})
                             ).setTimestamp()
-        channel.send(embed).catch(console.error)
+        channel.send({embeds: [embed]}).catch(console.error)
     }
 }

@@ -39,7 +39,7 @@ const listCommands = async (message) => {
         embed.addField(capitalize(category), commands[category].join(', '))
     }
     //Send the embed in channel
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 /**
@@ -86,7 +86,7 @@ const commandHelp = async (message, cmdName) => {
         if (cmd.parameters) {
             embed.addField('Parameters', cmd.parameters)
         }
-        channel.send(embed).catch(console.error)
+        channel.send({embeds: [embed]}).catch(console.error)
     }
 }
 

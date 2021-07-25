@@ -45,7 +45,7 @@ const dispAllValks = (message) => {
                             `Requested by ${author.tag}`,
                             author.displayAvatarURL({dynamic: true})
                         ).setTimestamp()
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 /**
@@ -88,7 +88,7 @@ const dispValk = (message, name) => {
         const url = `https://cdn.discordapp.com/emojis/${emote.id}.${ext}?v=1`
         embed.setThumbnail(url)
     }
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 module.exports = {
