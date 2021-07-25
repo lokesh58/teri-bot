@@ -12,7 +12,7 @@ module.exports = (member, cmd) => {
     const reqPerm = cmd.requiredPermissions
     if(reqPerm && Array.isArray(reqPerm)) {
         for(const perm of reqPerm) {
-            if (!member.hasPermission(perm))
+            if (!member.permissions.has(perm))
                 return false
         }
     }

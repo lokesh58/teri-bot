@@ -75,6 +75,6 @@ module.exports = {
         if (error.length > 0) {
             embed.addField('❌Not added due to some error', error.join(', '))
         }
-        channel.send(embed).catch(console.error)
+        channel.send({embeds: [embed]}).catch(console.error)
     }
 }

@@ -61,7 +61,7 @@ const addValk = async (message, name, battlesuit, nature, rank, acronyms, emoji)
         const url = `https://cdn.discordapp.com/emojis/${emote.id}.${ext}?v=1`
         embed.setThumbnail(url)
     }
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 module.exports = {

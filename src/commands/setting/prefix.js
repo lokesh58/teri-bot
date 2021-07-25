@@ -21,7 +21,7 @@ const displayPrefix = async (message) => {
                                 `Requested by ${author.tag}`,
                                 author.displayAvatarURL({dynamic: true})
                             ).setTimestamp()
-        channel.send(embed).catch(console.error)
+        channel.send({embeds: [embed]}).catch(console.error)
     }
 }
 
@@ -47,7 +47,7 @@ const changePrefix = async (message, newPrefix) => {
                                 `Requested by ${author.tag}`,
                                 author.displayAvatarURL({dynamic: true})
                             ).setTimestamp()
-        channel.send(embed).catch(console.error)
+        channel.send({embeds: [embed]}).catch(console.error)
     }
 }
 

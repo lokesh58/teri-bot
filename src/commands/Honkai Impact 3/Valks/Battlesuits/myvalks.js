@@ -105,7 +105,7 @@ const addValks = async (message, valks) => {
                         .setDescription(print.join('\n'))
                         .setColor('RANDOM')
     while(status.length > 0){
-        channel.send(embed).catch(console.error)
+        channel.send({embeds: [embed]}).catch(console.error)
         print = status.splice(0, 30)
         embed = new MessageEmbed()
                         .setDescription(print.join('\n'))
@@ -115,7 +115,7 @@ const addValks = async (message, valks) => {
         `Requested by ${author.tag}`,
         author.displayAvatarURL({dynamic: true})
     ).setTimestamp()
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 module.exports = {

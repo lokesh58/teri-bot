@@ -11,6 +11,7 @@ module.exports = (client) => {
             } else if (file.endsWith('.js')) {
                 const event = require(join(__dirname, dir, file))
                 event(client)
+                console.log(`Started event ${file}`)
             }
         }
     }

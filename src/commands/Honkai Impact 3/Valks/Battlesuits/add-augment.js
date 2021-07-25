@@ -33,7 +33,7 @@ const addAug = async (message, name, augEmoji) => {
                             author.displayAvatarURL({dynamic: true})
                         ).setColor('RANDOM')
                         .setTimestamp()
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 module.exports = {

@@ -37,7 +37,7 @@ const addNature = async (message, name, emoji) => {
                             `Requested by ${author.tag}`,
                             author.displayAvatarURL({dynamic: true})
                         ).setTimestamp()
-    channel.send(embed).catch(console.error)
+    channel.send({embeds: [embed]}).catch(console.error)
 }
 
 module.exports = {
