@@ -64,5 +64,5 @@ module.exports = async (message, target) => {
                             `Requested by ${author.tag}`,
                             author.displayAvatarURL({dynamic: true})
                         ).setTimestamp()
-    channel.send(embed)
+    channel.send({embeds: [embed]})
 }

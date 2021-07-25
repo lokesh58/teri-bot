@@ -60,7 +60,7 @@ const commandHelp = async (message, cmdName) => {
                             .setTitle(`Command \`${cmdName}\` not found`)
                             .setDescription(`Please use \`${prefix}help\` to get list of all commands`)
                             .setColor('FF0000')
-        message.reply(embed).catch(console.error)
+        message.reply({embeds: [embed]}).catch(console.error)
     } else {
         const embed = new MessageEmbed()
                             .setTitle(`Command Help for \`${cmd.name}\``)

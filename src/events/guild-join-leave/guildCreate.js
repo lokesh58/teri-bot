@@ -18,6 +18,6 @@ module.exports = (client) => {
                                 `My prefix here is: \`${prefix}\`\nUse \`${prefix}help\` to get a list of all my commands\nUse \`${prefix}prefix\` to change my prefix`
                             ).setColor('RANDOM')
                             .setTimestamp()
-        guild.systemChannel?.send(embed).catch(console.error)
+        guild.systemChannel?.send({embeds: [embed]}).catch(console.error)
     })
 }
