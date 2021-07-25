@@ -3,7 +3,7 @@ const checkPermission = require('$utils/checkPermission')
 const parse = require('$utils/parse-arguments')
 
 module.exports = (client) => {
-    client.on('message', async (message) => {
+    client.on('messageCreate', async (message) => {
         if (message.author.bot || message.channel.type === 'dm') return
         const prefix = await getPrefix(message.guild.id)
         if(!prefix) return //Some error retriving prefix, abort command execution
@@ -20,7 +20,10 @@ module.exports = (client) => {
         }else{
             //If not valid command, tell the user
             message.reply(`\`${cmdName}\` is not a valid command. Use help command to view all valid commands!`).then(msg => {
-                msg.delete({timeout: 5000}).catch(console.error)
+                setTimeout(
+                    () => msg.delete().catch(console.error),
+                    5000
+                )
             }).catch(console.error)
         }
     })

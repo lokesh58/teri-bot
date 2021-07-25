@@ -6,7 +6,7 @@ const getBlacklist = require('$utils/getBlacklist')
  */
 module.exports = (client) => {
     client.on(
-        'message',
+        'messageCreate',
         /**
          * 
          * @param {Message} message 
@@ -27,7 +27,7 @@ module.exports = (client) => {
                 message.delete({reason: 'Contains bad words'}).catch(console.error)
                 channel.send(`${author}, your message was deleted due to: Contains bad words`).then(
                     (msg) => {
-                        msg.delete({timeout: 2000}).catch(console.error)
+                        setTimeout(() => msg.delete().catch(console.error), 2000)
                     }
                 ).catch(console.error)
             }
