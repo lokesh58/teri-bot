@@ -18,7 +18,7 @@ const checkNature = (name) => {
 
 const checkBaseRank = (rank) => {
     rank = rank.toLowerCase()
-    if(validBaseRanks.includes(rank)){
+    if(!validBaseRanks.includes(rank)){
         return false;
     }
     return rank
