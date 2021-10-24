@@ -1,4 +1,4 @@
-const {Message, MessageEmbed} = require('discord.js')
+const {Message} = require('discord.js')
 const loadHi3cache = require('$utils/Honkai Impact 3/load-cache')
 
 module.exports = {
