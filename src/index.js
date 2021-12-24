@@ -18,7 +18,8 @@ const client = new Client({
 client.owners = [
     '651011187076759553',
     '322078119018364938',
-    '385170368530219009'
+    '385170368530219009',
+    '406452725522366465'
 ]
 client.discordTogether = new DiscordTogether(client)
 cmdLoader(client)
