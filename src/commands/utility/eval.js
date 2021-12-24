@@ -21,7 +21,8 @@ module.exports = {
      * @param {[String]} args 
      */
     run: (message, args) => {
-      if (!args[0].startsWith('js\n')) return message.reply('Only js is supported')
+      if (!args[0]) return message.reply('Please supply a js codeblock!')
+      if (!args[0].startsWith('js\n')) return message.reply('Only js codeblock is supported!')
       const code = args[0].substring(3)
       const oldLog = console.log
       let sandboxConsole = ''
@@ -29,7 +30,16 @@ module.exports = {
         if (sandboxConsole) sandboxConsole += '\n'
         sandboxConsole += args.map(args => `${args}`).join(' ')
       }
-      const result = eval(code)
+      let result = undefined
+      try {
+        result = eval(code)
+      } catch (err) {
+        if (sandboxConsole) sandboxConsole += '\n'
+        sandboxConsole += `${err}`
+      }
+      const maxAllowedLength = 1000
+      if (result && result.length > maxAllowedLength) result = result.substring(0, maxAllowedLength) + '...'
+      if (sandboxConsole.length > maxAllowedLength) sandboxConsole = sandboxConsole.substring(0, maxAllowedLength) + '...'
       console.log = oldLog
       message.reply({
         embeds: [
