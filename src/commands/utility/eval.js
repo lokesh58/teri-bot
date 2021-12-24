@@ -23,13 +23,20 @@ module.exports = {
     run: (message, args) => {
       if (!args[0].startsWith('js\n')) return message.reply('Only js is supported')
       const code = args[0].substring(3)
+      const oldLog = console.log
+      let sandboxConsole = ''
+      console.log = (...args) => {
+        if (sandboxConsole) sandboxConsole += '\n'
+        sandboxConsole += args.map(args => `${args}`).join(' ')
+      }
       const result = eval(code)
+      console.log = oldLog
       message.reply({
         embeds: [
           new MessageEmbed()
             .setTitle('Eval Result')
             .setDescription(
-              `⬇️ **Input**\n\`\`\`js\n${code}\n\`\`\`\n⬆️ **Output**\n\`\`\`\n${result}\n\`\`\``
+              `**Input**\n\`\`\`js\n${code}\n\`\`\`\n**Output**\n\`\`\`\n${result}\n\`\`\`\n**Console**\n\`\`\`js\n${sandboxConsole || '<empty>'}\n\`\`\``
             )
             .setTimestamp()
             .setFooter(

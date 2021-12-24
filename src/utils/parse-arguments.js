@@ -31,7 +31,6 @@ module.exports = (str) => {
             }
             ++j
         }
-        console.log(word)
         args.push(word)
         i = j-1
     }
