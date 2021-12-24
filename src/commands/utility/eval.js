@@ -1,18 +1,8 @@
 const {Message, MessageEmbed} = require('discord.js')
 
-/**
- * Returns the code block
- * @param {String} text 
- * @returns The code
- */
-const extractCodeBlock = (text) => {
-  const matched = text.match(/```js\n(.*?)```/)
-  return matched?.length ? matched[0] : null;
-}
-
 module.exports = {
     name: 'eval',
-    desc: 'Evaluates js code',
+    desc: 'Evaluates js code. (Note: empty console won\'t be displayed',
     expectedArgs: '<js code block>',
     parameters: '`<js code block>`: The javascript code block to evaluate',
     ownerOnly: true,
@@ -28,34 +18,37 @@ module.exports = {
       const code = args[0].substring(3)
       const oldLog = console.log
       let sandboxConsole = ''
+      let error = ''
       console.log = (...args) => {
         if (sandboxConsole) sandboxConsole += '\n'
         sandboxConsole += args.map(args => `${args}`).join(' ')
       }
-      let result = undefined
+      let result;
       try {
         result = await eval(code)
       } catch (err) {
-        if (sandboxConsole) sandboxConsole += '\n'
-        sandboxConsole += `${err}`
+        error = `${err}`
       }
-      const maxAllowedLength = 2500
+      const maxAllowedLength = 1500
       if (result && result.length > maxAllowedLength) result = result.substring(0, maxAllowedLength) + '...'
       if (sandboxConsole.length > maxAllowedLength) sandboxConsole = sandboxConsole.substring(0, maxAllowedLength) + '...'
+      if (error.length > maxAllowedLength) error = error.substring(0, maxAllowedLength) + '...'
       console.log = oldLog
-      message.reply({
+      let out = `**Input**\n\`\`\`js\n${code}\n\`\`\``
+      if (!error) out += `\n**Output**\n\`\`\`js\n${result}\n\`\`\``
+      if (sandboxConsole) out += `\n**Console**\n\`\`\`\n${sandboxConsole}\n\`\`\``
+      if (error) out += `\n**Error**\n\`\`\`\n${error}\n\`\`\``
+      message.channel.send({
         embeds: [
           new MessageEmbed()
             .setTitle('Eval Result')
-            .setDescription(
-              `**Input**\n\`\`\`js\n${code}\n\`\`\`\n**Output**\n\`\`\`js\n${result}\n\`\`\`\n**Console**\n\`\`\`\n${sandboxConsole || '<empty>'}\n\`\`\``
-            )
+            .setDescription(out)
             .setTimestamp()
             .setFooter(
               `Requested by ${message.author.tag}`,
               message.author.displayAvatarURL({dynamic: true})
             )
         ]
-      })
+      }).catch(console.error)
     }
 }
