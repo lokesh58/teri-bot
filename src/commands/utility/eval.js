@@ -2,7 +2,7 @@ const {Message, MessageEmbed} = require('discord.js')
 
 module.exports = {
     name: 'eval',
-    desc: 'Evaluates js code. (Note: empty console won\'t be displayed',
+    desc: 'Evaluates js code. (Note: undefined output or empty console won\'t be displayed)',
     expectedArgs: '<js code block>',
     parameters: '`<js code block>`: The javascript code block to evaluate',
     ownerOnly: true,
@@ -35,7 +35,7 @@ module.exports = {
       if (error.length > maxAllowedLength) error = error.substring(0, maxAllowedLength) + '...'
       console.log = oldLog
       let out = `**Input**\n\`\`\`js\n${code}\n\`\`\``
-      if (!error) out += `\n**Output**\n\`\`\`js\n${result}\n\`\`\``
+      if (!error && result !== undefined) out += `\n**Output**\n\`\`\`js\n${result}\n\`\`\``
       if (sandboxConsole) out += `\n**Console**\n\`\`\`\n${sandboxConsole}\n\`\`\``
       if (error) out += `\n**Error**\n\`\`\`\n${error}\n\`\`\``
       message.channel.send({
