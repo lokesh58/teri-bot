@@ -19,7 +19,7 @@ module.exports = (str) => {
         let ignoreSpecial = false
         let word = ''
         while(j<len && (ignoreBreak || ignoreSpecial || !breakCharacters.includes(str[j]))){
-            if(str[j]===escapeCharacter && j+1 < len && specialCharacters.includes(str[j+1])){
+            if(!ignoreSpecial && str[j]===escapeCharacter && j+1 < len && specialCharacters.includes(str[j+1])){
                 word += str[++j]
             }else if(!ignoreSpecial && str[j] === '\"'){
                 ignoreBreak = !ignoreBreak

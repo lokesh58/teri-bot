@@ -13,6 +13,8 @@ const extractCodeBlock = (text) => {
 module.exports = {
     name: 'eval',
     desc: 'Evaluates js code',
+    expectedArgs: '<js code block>',
+    parameters: '`<js code block>`: The javascript code block to evaluate',
     ownerOnly: true,
     category: 'utility',
     /**
@@ -20,7 +22,7 @@ module.exports = {
      * @param {Message} message 
      * @param {[String]} args 
      */
-    run: (message, args) => {
+    run: async (message, args) => {
       if (!args[0]) return message.reply('Please supply a js codeblock!')
       if (!args[0].startsWith('js\n')) return message.reply('Only js codeblock is supported!')
       const code = args[0].substring(3)
@@ -32,12 +34,12 @@ module.exports = {
       }
       let result = undefined
       try {
-        result = eval(code)
+        result = await eval(code)
       } catch (err) {
         if (sandboxConsole) sandboxConsole += '\n'
         sandboxConsole += `${err}`
       }
-      const maxAllowedLength = 1000
+      const maxAllowedLength = 2500
       if (result && result.length > maxAllowedLength) result = result.substring(0, maxAllowedLength) + '...'
       if (sandboxConsole.length > maxAllowedLength) sandboxConsole = sandboxConsole.substring(0, maxAllowedLength) + '...'
       console.log = oldLog
@@ -46,7 +48,7 @@ module.exports = {
           new MessageEmbed()
             .setTitle('Eval Result')
             .setDescription(
-              `**Input**\n\`\`\`js\n${code}\n\`\`\`\n**Output**\n\`\`\`\n${result}\n\`\`\`\n**Console**\n\`\`\`js\n${sandboxConsole || '<empty>'}\n\`\`\``
+              `**Input**\n\`\`\`js\n${code}\n\`\`\`\n**Output**\n\`\`\`js\n${result}\n\`\`\`\n**Console**\n\`\`\`\n${sandboxConsole || '<empty>'}\n\`\`\``
             )
             .setTimestamp()
             .setFooter(

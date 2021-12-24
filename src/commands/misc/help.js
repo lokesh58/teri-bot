@@ -28,7 +28,7 @@ const listCommands = async (message) => {
     const embed = new MessageEmbed()
                     .setTitle('Available Commands')
                     .setDescription(
-                        `📫 Here are a list of all commands you can use.\nTo get help relating to a specific command use \`${prefix}help <command name>\`\n*Honkai Impact 3 category inspired by the Kek Armad Bot: [https://discord.gg/W8pyRMp](https://discord.gg/W8pyRMp)*`
+                        `📫 Here are a list of all commands you can use.\nTo get help relating to a specific command use \`${prefix}help <command name>\`\n*Honkai Impact 3 category inspired by the Kek Armad Bot: [Click to join Kek Armad](https://discord.gg/W8pyRMp)*`
                     ).setTimestamp()
                     .setFooter(
                         `Requested by ${author.tag}`,
