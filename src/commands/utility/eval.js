@@ -35,7 +35,7 @@ module.exports = {
       if (error.length > maxAllowedLength) error = error.substring(0, maxAllowedLength) + '...'
       console.log = oldLog
       let out = `**Input**\n\`\`\`js\n${code}\n\`\`\``
-      if (!error && result !== undefined) out += `\n**Output**\n\`\`\`js\n${result}\n\`\`\``
+      if (!error && (result !== undefined || !sandboxConsole)) out += `\n**Output**\n\`\`\`js\n${result}\n\`\`\``
       if (sandboxConsole) out += `\n**Console**\n\`\`\`\n${sandboxConsole}\n\`\`\``
       if (error) out += `\n**Error**\n\`\`\`\n${error}\n\`\`\``
       message.channel.send({
@@ -44,6 +44,7 @@ module.exports = {
             .setTitle('Eval Result')
             .setDescription(out)
             .setTimestamp()
+            .setColor('RANDOM')
             .setFooter(
               `Requested by ${message.author.tag}`,
               message.author.displayAvatarURL({dynamic: true})
