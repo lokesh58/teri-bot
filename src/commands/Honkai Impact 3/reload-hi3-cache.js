@@ -4,6 +4,8 @@ const loadHi3cache = require('$utils/Honkai Impact 3/load-cache')
 module.exports = {
     name: 'reload-hi3-cache',
     desc: 'Reloads HI3 cache, which includes the valks, natues and characters.',
+    expectedArgs: '<js code block>',
+    parameters: '`<js code block>`: The javascript code block to evaluate',
     ownerOnly: true,
     category: 'Honkai Impact 3',
     /**
