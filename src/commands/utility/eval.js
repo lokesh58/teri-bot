@@ -1,4 +1,5 @@
 const {Message, MessageEmbed} = require('discord.js')
+const {inspect} = require('util')
 
 module.exports = {
     name: 'eval',
@@ -21,11 +22,11 @@ module.exports = {
       let error = ''
       console.log = (...args) => {
         if (sandboxConsole) sandboxConsole += '\n'
-        sandboxConsole += args.map(args => `${args}`).join(' ')
+        sandboxConsole += args.map(arg => inspect(arg)).join(' ')
       }
       let result;
       try {
-        result = await eval(code)
+        result = inspect(await eval(code))
       } catch (err) {
         error = `${err}`
       }
