@@ -37,7 +37,7 @@ module.exports = {
       console.log = oldLog
       let out = `**Input**\n\`\`\`js\n${code}\n\`\`\``
       if (!error) out += `\n**Result**\n\`\`\`js\n${result}\n\`\`\``
-      if (sandboxConsole) out += `\n**Console**\n\`\`\`\n${sandboxConsole}\n\`\`\``
+      if (sandboxConsole) out += `\n**Console**\n\`\`\`js\n${sandboxConsole}\n\`\`\``
       if (error) out += `\n**Error**\n\`\`\`\n${error}\n\`\`\``
       message.channel.send({
         embeds: [
