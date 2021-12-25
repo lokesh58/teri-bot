@@ -3,7 +3,7 @@ const {inspect} = require('util')
 
 module.exports = {
     name: 'eval',
-    desc: 'Evaluates js code. (Note: undefined output or empty console won\'t be displayed)',
+    desc: 'Evaluates js code. (Note: empty console won\'t be displayed)',
     expectedArgs: '<js code block>',
     parameters: '`<js code block>`: The javascript code block to evaluate',
     ownerOnly: true,
