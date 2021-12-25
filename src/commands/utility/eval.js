@@ -36,7 +36,7 @@ module.exports = {
       if (error.length > maxAllowedLength) error = error.substring(0, maxAllowedLength) + '...'
       console.log = oldLog
       let out = `**Input**\n\`\`\`js\n${code}\n\`\`\``
-      if (!error && (result !== undefined || !sandboxConsole)) out += `\n**Output**\n\`\`\`js\n${result}\n\`\`\``
+      if (!error) out += `\n**Result**\n\`\`\`js\n${result}\n\`\`\``
       if (sandboxConsole) out += `\n**Console**\n\`\`\`\n${sandboxConsole}\n\`\`\``
       if (error) out += `\n**Error**\n\`\`\`\n${error}\n\`\`\``
       message.channel.send({
