@@ -4,8 +4,9 @@ const {inspect: inspectUtil} = require('util')
 const inspect = (arg) => typeof arg === 'string' ? arg : inspectUtil(arg);
 
 module.exports = {
-    name: 'eval',
-    desc: 'Evaluates js code. (Note: empty console won\'t be displayed)',
+    name: 'evaluate',
+    aliases: ['eval', 'run'],
+    desc: 'Runs js code.',
     expectedArgs: '<js code block>',
     parameters: '`<js code block>`: The javascript code block to evaluate',
     ownerOnly: true,
@@ -26,21 +27,19 @@ module.exports = {
         if (sandboxConsole) sandboxConsole += '\n'
         sandboxConsole += args.map(arg => inspect(arg)).join(' ')
       }
-      let result;
       try {
-        result = inspect(await eval(`(async()=>{${code}})()`))
+        await eval(`(async()=>{${code}})()`)
       } catch (err) {
         error = `${err}`
       }
-      const maxAllowedLength = 1500
-      if (result && result.length > maxAllowedLength) result = result.substring(0, maxAllowedLength) + '...'
+      const maxAllowedLength = 3000
       if (sandboxConsole.length > maxAllowedLength) sandboxConsole = sandboxConsole.substring(0, maxAllowedLength) + '...'
       if (error.length > maxAllowedLength) error = error.substring(0, maxAllowedLength) + '...'
       console.log = oldLog
       let out = `**Input**\n\`\`\`js\n${code}\n\`\`\``
-      if (!error) out += `\n**Result**\n\`\`\`js\n${result}\n\`\`\``
-      if (sandboxConsole) out += `\n**Console**\n\`\`\`js\n${sandboxConsole}\n\`\`\``
+      if (sandboxConsole) out += `\n**Output**\n\`\`\`js\n${sandboxConsole}\n\`\`\``
       if (error) out += `\n**Error**\n\`\`\`\n${error}\n\`\`\``
+      else if (!sandboxConsole) out += `\n✅ Execution successful, no output on console`
       message.channel.send({
         embeds: [
           new MessageEmbed()
