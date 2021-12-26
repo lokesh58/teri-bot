@@ -43,7 +43,7 @@ module.exports = {
       message.channel.send({
         embeds: [
           new MessageEmbed()
-            .setTitle('Eval Result')
+            .setTitle('Execution Result')
             .setDescription(out)
             .setTimestamp()
             .setColor('RANDOM')
