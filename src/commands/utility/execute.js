@@ -4,11 +4,11 @@ const {inspect: inspectUtil} = require('util')
 const inspect = (arg) => typeof arg === 'string' ? arg : inspectUtil(arg);
 
 module.exports = {
-    name: 'evaluate',
-    aliases: ['eval', 'run'],
+    name: 'execute',
+    aliases: ['exec', 'run'],
     desc: 'Runs js code.',
     expectedArgs: '<js code block>',
-    parameters: '`<js code block>`: The javascript code block to evaluate',
+    parameters: '`<js code block>`: The javascript code block to execute',
     ownerOnly: true,
     category: 'utility',
     /**
