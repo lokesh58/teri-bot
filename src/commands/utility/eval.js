@@ -1,5 +1,7 @@
 const {Message, MessageEmbed} = require('discord.js')
-const {inspect} = require('util')
+const {inspect: inspectUtil} = require('util')
+
+const inspect = (arg) => typeof arg === 'string' ? arg : inspectUtil(arg);
 
 module.exports = {
     name: 'eval',
