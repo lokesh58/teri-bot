@@ -1,6 +1,6 @@
 const escapeCharacter = '\\'
 const specialCharacters = [
-    '\\', '\"'
+    '\\', '\"', '`'
 ]
 const breakCharacters = [
     ' ', '\n'
