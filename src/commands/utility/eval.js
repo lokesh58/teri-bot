@@ -28,7 +28,7 @@ module.exports = {
       }
       let result;
       try {
-        result = inspect(await eval(code))
+        result = inspect(await eval(`(async()=>{${code}})()`))
       } catch (err) {
         error = `${err}`
       }
