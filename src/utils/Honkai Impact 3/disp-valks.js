@@ -56,13 +56,26 @@ module.exports = async (message, target) => {
             value: 'Valkyries you register will appear here'
         })
     }
-    const embed = new MessageEmbed()
-                        .setTitle(`Valkyries of ${target.tag}`)
+    const totalPages = Math.ceil(fields.length/9);
+    let currentPage = 1;
+    let print = fields.splice(0,9)
+    let embed = new MessageEmbed()
+                        .setTitle(`Registered Valkyries for ${target.tag}`)
+                        .addFields(print)
                         .setColor('RANDOM')
-                        .addFields(fields)
-                        .setFooter(
-                            `Requested by ${author.tag}`,
-                            author.displayAvatarURL({dynamic: true})
-                        ).setTimestamp()
-    channel.send({embeds: [embed]})
+                        .setFooter(`(${currentPage}/${totalPages})`)
+    while(fields.length > 0){
+        await channel.send({embeds: [embed]}).catch(console.error)
+        currentPage += 1;
+        print = fields.splice(0, 9)
+        embed = new MessageEmbed()
+                        .addFields(print)
+                        .setColor('RANDOM')
+                        .setFooter(`(${currentPage}/${totalPages})`)
+    }
+    embed.setFooter(
+        `(${currentPage}/${totalPages}) • Requested by ${author.tag}`,
+        author.displayAvatarURL({dynamic: true})
+    ).setTimestamp()
+    await channel.send({embeds: [embed]}).catch(console.error)
 }

@@ -99,23 +99,28 @@ const addValks = async (message, valks) => {
         }
         status.push(`**${capitalize(valk.name)}** ${valk.emoji?valk.emoji:'-'} **${rankStat}**`)
     }
+    const totalPages = Math.ceil(status.length/30);
+    let currentPage = 1;
     let print = status.splice(0,30)
     let embed = new MessageEmbed()
                         .setTitle(`Registered Valkyries for ${author.tag}`)
                         .setDescription(print.join('\n'))
                         .setColor('RANDOM')
+                        .setFooter(`(${currentPage}/${totalPages})`)
     while(status.length > 0){
-        channel.send({embeds: [embed]}).catch(console.error)
+        await channel.send({embeds: [embed]}).catch(console.error)
+        currentPage += 1
         print = status.splice(0, 30)
         embed = new MessageEmbed()
                         .setDescription(print.join('\n'))
                         .setColor('RANDOM')
+                        .setFooter(`(${currentPage}/${totalPages})`)
     }
     embed.setFooter(
-        `Requested by ${author.tag}`,
+        `(${currentPage}/${totalPages}) • Requested by ${author.tag}`,
         author.displayAvatarURL({dynamic: true})
     ).setTimestamp()
-    channel.send({embeds: [embed]}).catch(console.error)
+    await channel.send({embeds: [embed]}).catch(console.error)
 }
 
 module.exports = {
